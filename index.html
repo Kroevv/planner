@@ -838,25 +838,6 @@ function updateUserUI(){
     document.getElementById('modalUserLogin').textContent=login;
     document.getElementById('modalUserAvatar').textContent=avatar;
 }
-
-// ===== AUTH TABS =====
-document.getElementById('tabLogin').addEventListener('click',()=>{
-    document.getElementById('tabLogin').classList.add('active');
-    document.getElementById('tabRegister').classList.remove('active');
-    document.getElementById('loginForm').style.display='block';
-    document.getElementById('registerForm').style.display='none';
-    document.getElementById('loginError').classList.remove('show');
-});
-
-document.getElementById('tabRegister').addEventListener('click',()=>{
-    document.getElementById('tabRegister').classList.add('active');
-    document.getElementById('tabLogin').classList.remove('active');
-    document.getElementById('registerForm').style.display='block';
-    document.getElementById('loginForm').style.display='none';
-    document.getElementById('registerError').classList.remove('show');
-    document.getElementById('registerSuccess').classList.remove('show');
-});
-
 // ===== ВХОД/РЕГИСТРАЦИЯ =====
 const TECH_PASSWORD='planner_secret_2024';
 
