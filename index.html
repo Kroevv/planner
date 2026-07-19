@@ -264,25 +264,34 @@ color:#fff;font-size:10px;font-weight:700;
             </div>
             <span class="auth-logo-text">Планер</span>
         </div>
-        <div class="auth-tabs">
-            <button class="auth-tab active" id="tabLogin">Войти</button>
-            <button class="auth-tab" id="tabRegister">Регистрация</button>
-        </div>
-        <!-- ФОРМА ВХОДА -->
-        <div id="loginForm">
-            <div class="auth-form">
-                <div class="auth-fg">
-                    <label>Логин</label>
-                    <input type="text" id="loginUsername" placeholder="Введите логин...">
-                </div>
-                <div class="auth-fg">
-                    <label>Пароль</label>
-                    <input type="password" id="loginPassword" placeholder="Введите пароль...">
-                </div>
-                <div class="auth-error" id="loginError"></div>
-                <button class="auth-btn" id="loginBtn">Войти</button>
+        <p style="font-size:13px;color:var(--t2);text-align:center;margin-bottom:24px;line-height:1.6">
+            Введите логин чтобы войти.<br>Новый логин — новый аккаунт.
+        </p>
+        <div class="auth-form">
+            <div class="auth-fg">
+                <label>Логин</label>
+                <input type="text" id="loginUsername"
+                    placeholder="Введите логин..."
+                    autocomplete="username">
             </div>
+            <div class="auth-error" id="loginError"></div>
+            <button class="auth-btn" id="loginBtn">Войти</button>
         </div>
+    </div>
+</div>
+        <!-- ФОРМА ВХОДА -->
+<div id="loginForm">
+    <div class="auth-form">
+        <div class="auth-fg">
+            <label>Логин</label>
+            <input type="text" id="loginUsername"
+                placeholder="Введите логин..."
+                autocomplete="username">
+        </div>
+        <div class="auth-error" id="loginError"></div>
+        <button class="auth-btn" id="loginBtn">Войти</button>
+    </div>
+</div>
         <!-- ФОРМА РЕГИСТРАЦИИ -->
         <div id="registerForm" style="display:none">
             <div class="auth-form">
@@ -848,84 +857,68 @@ document.getElementById('tabRegister').addEventListener('click',()=>{
     document.getElementById('registerSuccess').classList.remove('show');
 });
 
-// ===== РЕГИСТРАЦИЯ =====
-document.getElementById('registerBtn').addEventListener('click',async()=>{
-    const username=document.getElementById('regUsername').value.trim();
-    const password=document.getElementById('regPassword').value;
-    const password2=document.getElementById('regPassword2').value;
-    const errEl=document.getElementById('registerError');
-    const sucEl=document.getElementById('registerSuccess');
-    errEl.classList.remove('show');
-    sucEl.classList.remove('show');
+// ===== ВХОД/РЕГИСТРАЦИЯ =====
+const TECH_PASSWORD='planner_secret_2024';
 
-    if(!username){errEl.textContent='Введите логин';errEl.classList.add('show');return;}
-    if(username.length<3){errEl.textContent='Логин минимум 3 символа';errEl.classList.add('show');return;}
-    if(!/^[a-zA-Z0-9_]+$/.test(username)){errEl.textContent='Логин только латиница, цифры и _';errEl.classList.add('show');return;}
-    if(!password){errEl.textContent='Введите пароль';errEl.classList.add('show');return;}
-    if(password.length<6){errEl.textContent='Пароль минимум 6 символов';errEl.classList.add('show');return;}
-    if(password!==password2){errEl.textContent='Пароли не совпадают';errEl.classList.add('show');return;}
+function getTechPassword(username){
+    return `${TECH_PASSWORD}_${username.toLowerCase()}`;
+}
 
-    const btn=document.getElementById('registerBtn');
-    btn.disabled=true;btn.textContent='Регистрация...';
-
-    const email=usernameToEmail(username);
-    const{data,error}=await sb.auth.signUp({email,password});
-
-    btn.disabled=false;btn.textContent='Зарегистрироваться';
-
-    if(error){
-        if(error.message.includes('already registered')){
-            errEl.textContent='Этот логин уже занят';
-        } else {
-            errEl.textContent=error.message;
-        }
-        errEl.classList.add('show');
-        return;
-    }
-
-    sucEl.textContent='✅ Аккаунт создан! Теперь войдите.';
-    sucEl.classList.add('show');
-    document.getElementById('regUsername').value='';
-    document.getElementById('regPassword').value='';
-    document.getElementById('regPassword2').value='';
-});
-
-// ===== ВХОД =====
 document.getElementById('loginBtn').addEventListener('click',async()=>{
     const username=document.getElementById('loginUsername').value.trim();
-    const password=document.getElementById('loginPassword').value;
     const errEl=document.getElementById('loginError');
     errEl.classList.remove('show');
 
-    if(!username){errEl.textContent='Введите логин';errEl.classList.add('show');return;}
-    if(!password){errEl.textContent='Введите пароль';errEl.classList.add('show');return;}
+    if(!username){
+        errEl.textContent='Введите логин';
+        errEl.classList.add('show');return;
+    }
+    if(username.length<3){
+        errEl.textContent='Логин минимум 3 символа';
+        errEl.classList.add('show');return;
+    }
+    if(!/^[a-zA-Z0-9_]+$/.test(username)){
+        errEl.textContent='Только латиница, цифры и _';
+        errEl.classList.add('show');return;
+    }
 
     const btn=document.getElementById('loginBtn');
     btn.disabled=true;btn.textContent='Вход...';
 
     const email=usernameToEmail(username);
-    const{data,error}=await sb.auth.signInWithPassword({email,password});
+    const password=getTechPassword(username);
 
-    btn.disabled=false;btn.textContent='Войти';
+    // Пробуем войти
+    const{data:signInData,error:signInError}=
+        await sb.auth.signInWithPassword({email,password});
 
-    if(error){
-        errEl.textContent='Неверный логин или пароль';
-        errEl.classList.add('show');
+    if(!signInError&&signInData.user){
+        currentUser=signInData.user;
+        btn.disabled=false;btn.textContent='Войти';
+        await onLogin();
         return;
     }
 
-    currentUser=data.user;
-    await onLogin();
+    // Если не вошли — регистрируем
+    const{data:signUpData,error:signUpError}=
+        await sb.auth.signUp({email,password});
+
+    btn.disabled=false;btn.textContent='Войти';
+
+    if(signUpError){
+        errEl.textContent='Ошибка: '+signUpError.message;
+        errEl.classList.add('show');return;
+    }
+
+    if(signUpData.user){
+        currentUser=signUpData.user;
+        await onLogin();
+    }
 });
 
-// Enter в полях auth
-document.getElementById('loginPassword').addEventListener('keydown',e=>{
+document.getElementById('loginUsername').addEventListener('keydown',e=>{
     if(e.key==='Enter')document.getElementById('loginBtn').click();
 });
-document.getElementById('regPassword2').addEventListener('keydown',e=>{
-    if(e.key==='Enter')document.getElementById('registerBtn').click();
-});
-
 // ===== ВЫХОД =====
 document.getElementById('logoutBtn').addEventListener('click',async()=>{
     await sb.auth.signOut();
