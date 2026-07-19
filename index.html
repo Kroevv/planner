@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
@@ -26,123 +26,50 @@ body.dark{
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 body{font-family:'Inter',sans-serif;background:var(--bg1);color:var(--t1);transition:background .3s,color .3s;min-height:100vh;}
-.header{
-background:var(--bg2);padding:0 28px;
-display:flex;justify-content:space-between;align-items:center;
-border-bottom:1px solid var(--br);
-position:sticky;top:0;z-index:200;height:60px;
-}
+
+/* HEADER */
+.header{background:var(--bg2);padding:0 28px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--br);position:sticky;top:0;z-index:200;height:60px;}
 .header-left{display:flex;align-items:center;gap:8px;}
-.logo-btn{
-display:flex;align-items:center;gap:9px;
-background:none;border:none;cursor:pointer;
-padding:6px 10px;border-radius:10px;transition:background .2s;
-}
+.logo-btn{display:flex;align-items:center;gap:9px;background:none;border:none;cursor:pointer;padding:6px 10px;border-radius:10px;transition:background .2s;}
 .logo-btn:hover{background:var(--bg3);}
-.logo-icon{
-width:28px;height:28px;
-background:linear-gradient(135deg,var(--ac),var(--ac2));
-border-radius:8px;display:flex;align-items:center;justify-content:center;
-}
+.logo-icon{width:28px;height:28px;background:linear-gradient(135deg,var(--ac),var(--ac2));border-radius:8px;display:flex;align-items:center;justify-content:center;}
 .logo-icon svg{color:#fff;width:15px;height:15px;}
 .logo-text{font-family:'Playfair Display',serif;font-size:16px;font-weight:500;color:var(--t1);}
-.logo-space{
-font-size:12px;color:var(--t2);
-padding-left:8px;border-left:1px solid var(--br);
-margin-left:4px;max-width:140px;
-overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
-}
-.header-icon-btn{
-width:34px;height:34px;border:1px solid var(--br);
-background:var(--bg2);border-radius:9px;cursor:pointer;
-display:flex;align-items:center;justify-content:center;
-color:var(--t2);transition:all .2s;position:relative;
-}
+.logo-space{font-size:12px;color:var(--t2);padding-left:8px;border-left:1px solid var(--br);margin-left:4px;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.header-icon-btn{width:34px;height:34px;border:1px solid var(--br);background:var(--bg2);border-radius:9px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--t2);transition:all .2s;position:relative;}
 .header-icon-btn:hover{background:var(--bg3);color:var(--t1);}
 .header-icon-btn svg{width:15px;height:15px;}
-.notif-badge{
-position:absolute;top:-4px;right:-4px;
-width:16px;height:16px;
-background:var(--red);color:#fff;
-border-radius:50%;font-size:9px;font-weight:700;
-display:flex;align-items:center;justify-content:center;
-border:2px solid var(--bg2);
-}
+.notif-badge{position:absolute;top:-4px;right:-4px;width:16px;height:16px;background:var(--red);color:#fff;border-radius:50%;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;border:2px solid var(--bg2);}
 .notif-badge.hidden{display:none;}
 .header-divider{width:1px;height:20px;background:var(--br);margin:0 4px;}
-.view-tabs{display:flex;gap:2px;background:var(--bg3);padding:3px;border-radius:10px;}
-.view-tab{
-padding:5px 14px;border:none;background:transparent;
-color:var(--t2);border-radius:7px;cursor:pointer;
-font-size:12px;font-weight:500;font-family:'Inter',sans-serif;
-transition:all .2s;white-space:nowrap;
-}
-.view-tab.active{background:var(--bg2);color:var(--t1);box-shadow:0 1px 4px var(--sh2);}
-.view-tab:hover:not(.active){color:var(--t1);}
 .header-right{display:flex;align-items:center;gap:8px;}
-.icon-btn{
-width:34px;height:34px;border:1px solid var(--br);
-background:var(--bg2);border-radius:9px;cursor:pointer;
-display:flex;align-items:center;justify-content:center;
-color:var(--t2);transition:all .2s;
-}
+.icon-btn{width:34px;height:34px;border:1px solid var(--br);background:var(--bg2);border-radius:9px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--t2);transition:all .2s;}
 .icon-btn:hover{background:var(--bg3);color:var(--t1);}
 .icon-btn svg{width:15px;height:15px;}
-.toggle{
-width:42px;height:23px;background:var(--bg3);
-border:1px solid var(--br);border-radius:12px;
-cursor:pointer;position:relative;transition:.3s;
-}
-.toggle::after{
-content:'';position:absolute;top:3px;left:3px;
-width:15px;height:15px;background:var(--t3);
-border-radius:50%;transition:.3s;
-}
+.toggle{width:42px;height:23px;background:var(--bg3);border:1px solid var(--br);border-radius:12px;cursor:pointer;position:relative;transition:.3s;}
+.toggle::after{content:'';position:absolute;top:3px;left:3px;width:15px;height:15px;background:var(--t3);border-radius:50%;transition:.3s;}
 body.dark .toggle{background:var(--ac);border-color:var(--ac);}
 body.dark .toggle::after{transform:translateX(19px);background:#fff;}
+
+/* LAYOUT */
 .app{display:flex;height:calc(100vh - 60px);overflow:hidden;}
-.planner{
-flex:1;padding:24px 28px;overflow-y:auto;
-display:flex;flex-direction:column;gap:18px;min-width:0;
-}
-.planner.hidden{display:none;}
+.planner{flex:1;padding:24px 28px;overflow-y:auto;display:flex;flex-direction:column;gap:18px;min-width:0;}
 .planner-top{display:flex;justify-content:space-between;align-items:flex-start;}
-.planner-title h2{
-font-family:'Playfair Display',serif;font-size:24px;
-font-weight:500;color:var(--t1);line-height:1.2;
-}
+.planner-title h2{font-family:'Playfair Display',serif;font-size:24px;font-weight:500;color:var(--t1);line-height:1.2;}
 .planner-title p{font-size:12px;color:var(--t2);margin-top:3px;}
-.add-btn{
-display:flex;align-items:center;gap:7px;padding:9px 18px;
-background:linear-gradient(135deg,var(--ac),var(--ac2));
-color:#fff;border:none;border-radius:11px;cursor:pointer;
-font-size:13px;font-weight:600;font-family:'Inter',sans-serif;
-transition:all .2s;box-shadow:0 4px 12px var(--sh1);
-}
+.add-btn{display:flex;align-items:center;gap:7px;padding:9px 18px;background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff;border:none;border-radius:11px;cursor:pointer;font-size:13px;font-weight:600;font-family:'Inter',sans-serif;transition:all .2s;box-shadow:0 4px 12px var(--sh1);}
 .add-btn:hover{transform:translateY(-1px);box-shadow:0 6px 16px var(--sh1);}
 .add-btn svg{width:15px;height:15px;}
-.quick-add{
-display:flex;gap:8px;background:var(--bg2);padding:10px;
-border-radius:var(--r1);border:1px solid var(--br);box-shadow:0 2px 8px var(--sh2);
-}
-.quick-add input{
-flex:1;padding:9px 13px;border:1px solid var(--br);border-radius:10px;
-background:var(--bg3);color:var(--t1);font-size:13px;font-family:'Inter',sans-serif;transition:.2s;
-}
+.quick-add{display:flex;gap:8px;background:var(--bg2);padding:10px;border-radius:var(--r1);border:1px solid var(--br);box-shadow:0 2px 8px var(--sh2);}
+.quick-add input{flex:1;padding:9px 13px;border:1px solid var(--br);border-radius:10px;background:var(--bg3);color:var(--t1);font-size:13px;font-family:'Inter',sans-serif;transition:.2s;}
 .quick-add input:focus{outline:none;border-color:var(--ac);background:var(--bg2);}
 .quick-add input::placeholder{color:var(--t3);}
-.quick-btn{
-padding:9px 16px;background:var(--ac3);border:1px solid var(--br);border-radius:10px;
-color:var(--ac);cursor:pointer;font-size:12px;font-weight:600;
-font-family:'Inter',sans-serif;transition:.2s;white-space:nowrap;
-}
+.quick-btn{padding:9px 16px;background:var(--ac3);border:1px solid var(--br);border-radius:10px;color:var(--ac);cursor:pointer;font-size:12px;font-weight:600;font-family:'Inter',sans-serif;transition:.2s;white-space:nowrap;}
 .quick-btn:hover{background:var(--ac);color:#fff;border-color:var(--ac);}
+
+/* COLUMNS */
 .columns{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;flex:1;}
-.col{
-background:var(--bg2);border-radius:var(--r1);padding:14px;
-border:1px solid var(--br);display:flex;flex-direction:column;gap:10px;
-box-shadow:0 2px 8px var(--sh2);transition:border-color .2s,background .2s;
-}
+.col{background:var(--bg2);border-radius:var(--r1);padding:14px;border:1px solid var(--br);display:flex;flex-direction:column;gap:10px;box-shadow:0 2px 8px var(--sh2);transition:border-color .2s,background .2s;}
 .col.over{border-color:var(--ac);background:var(--ac3);}
 .col-head{display:flex;justify-content:space-between;align-items:center;}
 .col-label{display:flex;align-items:center;gap:8px;}
@@ -153,25 +80,16 @@ box-shadow:0 2px 8px var(--sh2);transition:border-color .2s,background .2s;
 .col-name{font-size:12px;font-weight:600;color:var(--t1);}
 .col-cnt{font-size:11px;font-weight:600;background:var(--bg3);color:var(--t2);padding:1px 8px;border-radius:20px;}
 .tlist{display:flex;flex-direction:column;gap:7px;flex:1;min-height:50px;}
-.task{
-background:var(--bg3);border:1px solid var(--br);border-radius:var(--r2);padding:11px 13px;
-cursor:grab;display:flex;align-items:flex-start;gap:9px;
-position:relative;word-break:break-word;user-select:none;transition:all .2s;
-}
+
+/* TASK */
+.task{background:var(--bg3);border:1px solid var(--br);border-radius:var(--r2);padding:11px 13px;cursor:grab;display:flex;align-items:flex-start;gap:9px;position:relative;word-break:break-word;user-select:none;transition:all .2s;}
 .task:hover{background:var(--bg2);border-color:var(--ac2);box-shadow:0 4px 14px var(--sh1);}
 .task:active{cursor:grabbing;}
 .task.dragging{opacity:.35;transform:scale(.97);}
-.task-check{
-width:17px;height:17px;min-width:17px;border:1.5px solid var(--t3);border-radius:50%;
-cursor:pointer;margin-top:2px;transition:all .2s;
-display:flex;align-items:center;justify-content:center;background:transparent;flex-shrink:0;
-}
+.task-check{width:17px;height:17px;min-width:17px;border:1.5px solid var(--t3);border-radius:50%;cursor:pointer;margin-top:2px;transition:all .2s;display:flex;align-items:center;justify-content:center;background:transparent;flex-shrink:0;}
 .task-check:hover{border-color:var(--green);}
 .task-check.done-check{background:var(--green);border-color:var(--green);}
-.task-check.done-check::after{
-content:'';width:4px;height:7px;border:1.5px solid #fff;
-border-top:none;border-left:none;transform:rotate(45deg);margin-top:-2px;display:block;
-}
+.task-check.done-check::after{content:'';width:4px;height:7px;border:1.5px solid #fff;border-top:none;border-left:none;transform:rotate(45deg);margin-top:-2px;display:block;}
 .task-body{flex:1;min-width:0;}
 .task-name{font-size:13px;font-weight:500;color:var(--t1);line-height:1.4;}
 .task-meta{display:flex;flex-wrap:wrap;gap:4px;margin-top:5px;}
@@ -181,72 +99,38 @@ border-top:none;border-left:none;transform:rotate(45deg);margin-top:-2px;display
 .tag.repeat{background:var(--ac3);color:var(--ac);}
 .tag.note{background:var(--bg4);color:var(--t2);}
 .task-menu-wrap{position:relative;flex-shrink:0;}
-.mbtn{
-width:26px;height:26px;background:none;border:none;color:var(--t3);cursor:pointer;
-border-radius:6px;display:flex;align-items:center;justify-content:center;transition:.15s;
-}
+.mbtn{width:26px;height:26px;background:none;border:none;color:var(--t3);cursor:pointer;border-radius:6px;display:flex;align-items:center;justify-content:center;transition:.15s;}
 .mbtn:hover{background:var(--bg4);color:var(--t2);}
 .mbtn svg{width:13px;height:13px;}
-.ddmenu{
-position:fixed;background:var(--bg2);
-border:1px solid var(--br);border-radius:var(--r2);padding:5px;
-z-index:10000;min-width:165px;box-shadow:0 8px 24px var(--sh3);display:none;
-}
+.ddmenu{position:fixed;background:var(--bg2);border:1px solid var(--br);border-radius:var(--r2);padding:5px;z-index:10000;min-width:165px;box-shadow:0 8px 24px var(--sh3);display:none;}
 .ddmenu.show{display:block;}
-.ddi{
-padding:7px 11px;cursor:pointer;font-size:12px;font-weight:500;
-color:var(--t1);border:none;background:none;width:100%;text-align:left;
-border-radius:var(--r3);display:flex;align-items:center;gap:8px;
-font-family:'Inter',sans-serif;transition:.15s;
-}
+.ddi{padding:7px 11px;cursor:pointer;font-size:12px;font-weight:500;color:var(--t1);border:none;background:none;width:100%;text-align:left;border-radius:var(--r3);display:flex;align-items:center;gap:8px;font-family:'Inter',sans-serif;transition:.15s;}
 .ddi:hover{background:var(--bg3);}
 .ddi svg{width:12px;height:12px;color:var(--t2);flex-shrink:0;}
 .ddi.danger{color:var(--red);}
 .ddi.danger svg{color:var(--red);}
 .ddiv{height:1px;background:var(--br);margin:3px 0;}
-.empty{
-display:flex;flex-direction:column;align-items:center;
-justify-content:center;padding:28px 12px;gap:7px;color:var(--t3);font-size:12px;text-align:center;
-}
+.empty{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px 12px;gap:7px;color:var(--t3);font-size:12px;text-align:center;}
 .empty svg{width:28px;height:28px;opacity:.35;}
 </style>
 <style>
-.calendar{
-width:310px;min-width:310px;background:var(--bg2);
-border-left:1px solid var(--br);padding:22px 18px;
-overflow-y:auto;display:flex;flex-direction:column;gap:18px;
-}
+/* CALENDAR */
+.calendar{width:310px;min-width:310px;background:var(--bg2);border-left:1px solid var(--br);padding:22px 18px;overflow-y:auto;display:flex;flex-direction:column;gap:18px;}
 .calendar.hidden{display:none;}
-.calendar.full{width:100%;min-width:0;border-left:none;}
 .cal-head h2{font-family:'Playfair Display',serif;font-size:20px;font-weight:500;margin-bottom:12px;}
 .cal-tabs{display:flex;gap:3px;background:var(--bg3);padding:3px;border-radius:10px;}
-.cal-tab{
-flex:1;padding:6px 8px;border:none;background:transparent;
-color:var(--t2);border-radius:7px;cursor:pointer;
-font-size:11px;font-weight:600;font-family:'Inter',sans-serif;
-transition:.2s;text-align:center;
-}
+.cal-tab{flex:1;padding:6px 8px;border:none;background:transparent;color:var(--t2);border-radius:7px;cursor:pointer;font-size:11px;font-weight:600;font-family:'Inter',sans-serif;transition:.2s;text-align:center;}
 .cal-tab.active{background:var(--bg2);color:var(--t1);box-shadow:0 1px 4px var(--sh2);}
 .cview{display:none;}
 .cview.active{display:block;}
 .cnav{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
-.cnav-btn{
-width:28px;height:28px;background:var(--bg3);border:1px solid var(--br);
-color:var(--t2);cursor:pointer;border-radius:7px;
-display:flex;align-items:center;justify-content:center;transition:.2s;
-}
+.cnav-btn{width:28px;height:28px;background:var(--bg3);border:1px solid var(--br);color:var(--t2);cursor:pointer;border-radius:7px;display:flex;align-items:center;justify-content:center;transition:.2s;}
 .cnav-btn:hover{background:var(--ac3);border-color:var(--ac);color:var(--ac);}
 .cnav-btn svg{width:13px;height:13px;}
 .cnav-t{font-size:13px;font-weight:600;color:var(--t1);}
 .cgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;}
 .cwd{text-align:center;font-size:9px;font-weight:600;color:var(--t2);padding:5px 0;text-transform:uppercase;}
-.cday{
-aspect-ratio:1;display:flex;flex-direction:column;
-align-items:center;justify-content:center;
-border-radius:7px;cursor:pointer;
-font-size:11px;font-weight:500;color:var(--t1);
-transition:all .15s;position:relative;
-}
+.cday{aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:7px;cursor:pointer;font-size:11px;font-weight:500;color:var(--t1);transition:all .15s;position:relative;}
 .cday:hover{background:var(--bg3);}
 .cday.om{color:var(--t3);}
 .cday.today{background:var(--ac);color:#fff;font-weight:700;}
@@ -255,11 +139,7 @@ transition:all .15s;position:relative;
 .cday-dot{width:3px;height:3px;border-radius:50%;background:var(--ac);position:absolute;bottom:2px;}
 .cday.today .cday-dot{background:#fff;}
 .wview{display:flex;flex-direction:column;gap:4px;}
-.wday{
-background:var(--bg3);border:1px solid var(--br);
-border-radius:var(--r2);padding:10px 13px;
-cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:.2s;
-}
+.wday{background:var(--bg3);border:1px solid var(--br);border-radius:var(--r2);padding:10px 13px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:.2s;}
 .wday:hover{border-color:var(--ac2);background:var(--bg2);}
 .wday.today{background:linear-gradient(135deg,var(--ac),var(--ac2));border-color:transparent;}
 .wday.today .wday-n,.wday.today .wday-d{color:#fff;}
@@ -271,223 +151,185 @@ cursor:pointer;display:flex;justify-content:space-between;align-items:center;tra
 .wday.today .wday-c{background:rgba(255,255,255,.25);color:#fff;}
 .cal-tasks{border-top:1px solid var(--br);padding-top:14px;display:flex;flex-direction:column;gap:7px;}
 .cal-tasks-head{font-size:11px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.4px;}
-.ctask{
-background:var(--bg3);border:1px solid var(--br);
-border-radius:var(--r2);padding:9px 11px;
-cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:6px;transition:.2s;
-}
+.ctask{background:var(--bg3);border:1px solid var(--br);border-radius:var(--r2);padding:9px 11px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:6px;transition:.2s;}
 .ctask:hover{border-color:var(--ac2);background:var(--bg2);}
 .ctask-info{flex:1;min-width:0;}
 .ctask-name{font-size:12px;font-weight:500;color:var(--t1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .ctask-time{font-size:10px;color:var(--orange);font-weight:600;margin-top:2px;}
 .ctask-st{font-size:10px;padding:2px 7px;border-radius:20px;background:var(--bg4);color:var(--t2);font-weight:600;white-space:nowrap;}
-.overlay{
-display:none;position:fixed;inset:0;z-index:1000;
-background:rgba(44,40,37,.5);backdrop-filter:blur(6px);
-align-items:center;justify-content:center;
-}
+.cal-ctx-menu{position:fixed;background:var(--bg2);border:1px solid var(--br);border-radius:var(--r2);padding:5px;z-index:10000;min-width:180px;box-shadow:0 8px 24px var(--sh3);display:none;}
+.cal-ctx-menu.show{display:block;}
+</style>
+<style>
+/* OVERLAY + PANEL */
+.overlay{display:none;position:fixed;inset:0;z-index:1000;background:rgba(44,40,37,.5);backdrop-filter:blur(6px);align-items:center;justify-content:center;}
 .overlay.show{display:flex;}
-.panel{
-background:var(--bg2);border-radius:24px;padding:32px;
-max-width:680px;width:90%;max-height:85vh;overflow-y:auto;
-box-shadow:0 32px 64px rgba(0,0,0,.18);
-}
-.panel-head{
-display:flex;justify-content:space-between;
-align-items:center;margin-bottom:24px;
-}
+.panel{background:var(--bg2);border-radius:24px;padding:32px;max-width:680px;width:90%;max-height:85vh;overflow-y:auto;box-shadow:0 32px 64px rgba(0,0,0,.18);}
+.panel-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;}
 .panel-head h2{font-family:'Playfair Display',serif;font-size:22px;font-weight:500;}
-.panel-close{
-width:32px;height:32px;background:var(--bg3);
-border:none;border-radius:8px;cursor:pointer;
-display:flex;align-items:center;justify-content:center;
-color:var(--t2);transition:.2s;
-}
+.panel-close{width:32px;height:32px;background:var(--bg3);border:none;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--t2);transition:.2s;}
 .panel-close:hover{background:var(--bg4);color:var(--t1);}
 .panel-close svg{width:15px;height:15px;}
+
+/* SPACES */
 .spaces-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
-.space-card{
-position:relative;border-radius:14px;aspect-ratio:1;
-cursor:pointer;overflow:hidden;
-border:2px solid var(--br);transition:all .2s;background:var(--bg3);
-}
+.space-card{position:relative;border-radius:14px;aspect-ratio:1;cursor:pointer;overflow:hidden;border:2px solid var(--br);transition:all .2s;background:var(--bg3);}
 .space-card:hover{transform:translateY(-3px);box-shadow:0 8px 20px var(--sh1);border-color:var(--ac2);}
 .space-card.active{border-color:var(--ac);box-shadow:0 0 0 3px var(--ac3);}
 .sc-bg{position:absolute;inset:0;background-size:cover;background-position:center;}
 .sc-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.55) 0%,transparent 60%);}
-.sc-name{
-position:absolute;bottom:10px;left:10px;right:10px;
-font-size:12px;font-weight:600;color:#fff;
-text-shadow:0 1px 4px rgba(0,0,0,.4);
-white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-}
+.sc-name{position:absolute;bottom:10px;left:10px;right:10px;font-size:12px;font-weight:600;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,.4);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .sc-name.light{color:var(--t1);text-shadow:none;}
-.sc-del{
-position:absolute;top:7px;right:7px;
-width:20px;height:20px;background:rgba(255,255,255,.9);
-border:none;border-radius:50%;cursor:pointer;
-display:flex;align-items:center;justify-content:center;
-color:var(--red);transition:.2s;opacity:0;
-}
+.sc-del{position:absolute;top:7px;right:7px;width:20px;height:20px;background:rgba(255,255,255,.9);border:none;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--red);transition:.2s;opacity:0;}
 .space-card:hover .sc-del{opacity:1;}
-.sc-del:hover{background:#fff;transform:scale(1.1);}
 .sc-del svg{width:10px;height:10px;}
-.sc-edit{
-position:absolute;top:7px;left:7px;
-width:20px;height:20px;background:rgba(255,255,255,.9);
-border:none;border-radius:50%;cursor:pointer;
-display:flex;align-items:center;justify-content:center;
-color:var(--t2);transition:.2s;opacity:0;
-}
+.sc-edit{position:absolute;top:7px;left:7px;width:20px;height:20px;background:rgba(255,255,255,.9);border:none;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--t2);transition:.2s;opacity:0;}
 .space-card:hover .sc-edit{opacity:1;}
-.sc-edit:hover{background:#fff;color:var(--ac);}
 .sc-edit svg{width:10px;height:10px;}
-.space-add{
-border-radius:14px;aspect-ratio:1;cursor:pointer;
-border:2px dashed var(--br);background:transparent;
-display:flex;flex-direction:column;
-align-items:center;justify-content:center;gap:6px;
-transition:all .2s;color:var(--t3);
-}
+.sc-type-badge{position:absolute;bottom:7px;right:10px;font-size:14px;}
+.space-add{border-radius:14px;aspect-ratio:1;cursor:pointer;border:2px dashed var(--br);background:transparent;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;transition:all .2s;color:var(--t3);}
 .space-add:hover{border-color:var(--ac);color:var(--ac);background:var(--ac3);}
 .space-add svg{width:24px;height:24px;}
 .space-add span{font-size:11px;font-weight:600;}
-.spaces-empty{
-display:flex;flex-direction:column;align-items:center;
-justify-content:center;padding:48px 24px;gap:16px;text-align:center;
-}
+.spaces-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px 24px;gap:16px;text-align:center;}
 .spaces-empty h3{font-family:'Playfair Display',serif;font-size:22px;font-weight:500;}
 .spaces-empty p{font-size:13px;color:var(--t2);}
-.spaces-empty-btn{
-padding:12px 28px;
-background:linear-gradient(135deg,var(--ac),var(--ac2));
-color:#fff;border:none;border-radius:12px;cursor:pointer;
-font-size:14px;font-weight:600;font-family:'Inter',sans-serif;
-box-shadow:0 4px 12px var(--sh1);transition:.2s;
-}
-.spaces-empty-btn:hover{transform:translateY(-2px);box-shadow:0 6px 16px var(--sh1);}
+.spaces-empty-btn{padding:12px 28px;background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff;border:none;border-radius:12px;cursor:pointer;font-size:14px;font-weight:600;font-family:'Inter',sans-serif;box-shadow:0 4px 12px var(--sh1);transition:.2s;}
+
+/* NOTIFICATIONS */
 .notifs-panel{max-width:520px;}
 .notifs-head-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;}
 .notifs-head-row h2{font-family:'Playfair Display',serif;font-size:22px;font-weight:500;}
-.notifs-head-right{display:flex;gap:8px;align-items:center;}
-.notifs-clear-btn{
-padding:6px 12px;background:var(--red2);border:1px solid var(--red);
-border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;
-color:var(--red);font-family:'Inter',sans-serif;transition:.2s;
-}
+.notifs-clear-btn{padding:6px 12px;background:var(--red2);border:1px solid var(--red);border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;color:var(--red);font-family:'Inter',sans-serif;transition:.2s;}
 .notifs-clear-btn:hover{background:var(--red);color:#fff;}
-.notif-item{
-background:var(--bg3);border:1px solid var(--br);
-border-radius:var(--r2);padding:20px 22px;
-display:flex;gap:14px;align-items:flex-start;
-transition:.2s;margin-bottom:10px;cursor:pointer;
-}
+.notif-item{background:var(--bg3);border:1px solid var(--br);border-radius:var(--r2);padding:14px 16px;display:flex;gap:12px;align-items:flex-start;transition:.2s;margin-bottom:8px;cursor:pointer;}
 .notif-item:hover{border-color:var(--ac2);background:var(--bg2);}
-.notif-ico{font-size:26px;flex-shrink:0;margin-top:2px;}
+.notif-ico{font-size:22px;flex-shrink:0;}
 .notif-body{flex:1;min-width:0;}
-.notif-title{font-size:14px;font-weight:600;color:var(--t1);margin-bottom:4px;}
-.notif-text{font-size:13px;color:var(--t2);line-height:1.5;}
-.notif-time-label{font-size:11px;color:var(--t3);margin-top:5px;}
-.notif-del{
-background:none;border:none;color:var(--t3);
-cursor:pointer;padding:4px;border-radius:6px;
-transition:.15s;flex-shrink:0;
-display:flex;align-items:center;justify-content:center;
-}
+.notif-title{font-size:13px;font-weight:600;color:var(--t1);margin-bottom:3px;}
+.notif-text{font-size:12px;color:var(--t2);line-height:1.5;}
+.notif-time-label{font-size:11px;color:var(--t3);margin-top:4px;}
+.notif-del{background:none;border:none;color:var(--t3);cursor:pointer;padding:4px;border-radius:6px;transition:.15s;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
 .notif-del:hover{color:var(--red);background:var(--red2);}
 .notif-del svg{width:14px;height:14px;}
-.notifs-empty{
-display:flex;flex-direction:column;align-items:center;
-padding:40px 20px;gap:10px;color:var(--t3);font-size:13px;text-align:center;
-}
+.notifs-empty{display:flex;flex-direction:column;align-items:center;padding:40px 20px;gap:10px;color:var(--t3);font-size:13px;text-align:center;}
 .notifs-empty svg{width:36px;height:36px;opacity:.3;}
-@keyframes slideInNotif{
-from{transform:translateX(400px);opacity:0}
-to{transform:translateX(0);opacity:1}
-}
-.floating-notif-container{
-position:fixed;top:76px;right:20px;
-z-index:9998;display:flex;
-flex-direction:column;gap:10px;
-max-width:420px;width:90%;
-pointer-events:none;
-}
-.floating-notif{
-background:var(--bg2);
-border:1px solid var(--br);
-border-left:4px solid var(--ac);
-border-radius:14px;
-padding:20px 22px;
-box-shadow:0 8px 32px var(--sh3);
-display:flex;gap:14px;align-items:flex-start;
-cursor:pointer;
-animation:slideInNotif .3s ease;
-pointer-events:all;
-}
-.floating-notif:hover{background:var(--bg3);}
-.floating-notif-icon{font-size:28px;flex-shrink:0;}
-.floating-notif-body{flex:1;}
-.floating-notif-title{font-size:15px;font-weight:600;color:var(--t1);margin-bottom:4px;}
-.floating-notif-text{font-size:13px;color:var(--t2);line-height:1.4;}
-.floating-notif-hint{font-size:11px;color:var(--t3);margin-top:6px;}
-.modal{
-display:none;position:fixed;z-index:2000;
-left:0;top:0;width:100%;height:100%;
-background:rgba(44,40,37,.5);backdrop-filter:blur(4px);
-align-items:center;justify-content:center;
-}
+
+/* NOTES */
+.notes-overlay{display:none;position:fixed;inset:0;z-index:1500;background:rgba(44,40,37,.5);backdrop-filter:blur(6px);align-items:center;justify-content:center;}
+.notes-overlay.show{display:flex;}
+.notes-panel{background:var(--bg2);border-radius:24px;width:90%;max-width:720px;height:80vh;box-shadow:0 32px 64px rgba(0,0,0,.18);display:flex;flex-direction:column;overflow:hidden;}
+.notes-header{display:flex;align-items:center;border-bottom:1px solid var(--br);min-height:50px;padding:0 16px 0 0;}
+.notes-tabs{display:flex;flex:1;overflow-x:auto;gap:2px;padding:8px 8px 0;}
+.notes-tabs::-webkit-scrollbar{height:0;}
+.note-tab{display:flex;align-items:center;gap:6px;padding:7px 14px;border:none;background:transparent;color:var(--t2);font-size:12px;font-weight:500;font-family:'Inter',sans-serif;cursor:pointer;border-radius:8px 8px 0 0;transition:.15s;white-space:nowrap;border-bottom:2px solid transparent;}
+.note-tab.active{background:var(--bg3);color:var(--t1);border-bottom-color:var(--ac);}
+.note-tab:hover:not(.active){background:var(--bg3);color:var(--t1);}
+.note-tab-close{width:16px;height:16px;border-radius:50%;border:none;background:transparent;color:var(--t3);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.15s;flex-shrink:0;padding:0;}
+.note-tab-close:hover{background:var(--red2);color:var(--red);}
+.note-tab-close svg{width:8px;height:8px;}
+.notes-add-btn{width:28px;height:28px;border:1px solid var(--br);background:var(--bg3);border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--t2);transition:.2s;flex-shrink:0;margin-right:8px;}
+.notes-add-btn:hover{background:var(--ac3);color:var(--ac);border-color:var(--ac);}
+.notes-add-btn svg{width:14px;height:14px;}
+.notes-close-btn{width:32px;height:32px;background:var(--bg3);border:none;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--t2);transition:.2s;flex-shrink:0;}
+.notes-close-btn:hover{background:var(--bg4);color:var(--t1);}
+.notes-close-btn svg{width:15px;height:15px;}
+.notes-body{flex:1;overflow:hidden;display:flex;flex-direction:column;}
+.note-editor{flex:1;padding:20px 24px;border:none;outline:none;resize:none;background:var(--bg2);color:var(--t1);font-size:14px;font-family:'Inter',sans-serif;line-height:1.7;}
+.note-editor::placeholder{color:var(--t3);}
+
+/* SETTINGS */
+.settings-panel{max-width:480px;}
+.settings-section{margin-bottom:24px;}
+.settings-section-title{font-size:11px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px;}
+.settings-item{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;background:var(--bg3);border-radius:var(--r2);border:1px solid var(--br);margin-bottom:8px;}
+.settings-item-info h4{font-size:13px;font-weight:600;color:var(--t1);margin-bottom:2px;}
+.settings-item-info p{font-size:11px;color:var(--t2);}
+.settings-toggle{width:42px;height:23px;background:var(--bg4);border:1px solid var(--br);border-radius:12px;cursor:pointer;position:relative;transition:.3s;flex-shrink:0;}
+.settings-toggle::after{content:'';position:absolute;top:3px;left:3px;width:15px;height:15px;background:var(--t3);border-radius:50%;transition:.3s;}
+.settings-toggle.on{background:var(--ac);border-color:var(--ac);}
+.settings-toggle.on::after{transform:translateX(19px);background:#fff;}
+
+/* SPACE TYPE */
+.space-type-choice{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;}
+.space-type-btn{padding:16px;border:2px solid var(--br);border-radius:14px;background:var(--bg3);cursor:pointer;text-align:center;transition:.2s;font-family:'Inter',sans-serif;}
+.space-type-btn:hover{border-color:var(--ac2);background:var(--bg2);}
+.space-type-btn.selected{border-color:var(--ac);background:var(--ac3);}
+.space-type-btn svg{width:28px;height:28px;color:var(--ac);margin-bottom:8px;}
+.space-type-btn h4{font-size:13px;font-weight:600;color:var(--t1);margin-bottom:4px;}
+.space-type-btn p{font-size:11px;color:var(--t2);}
+
+/* DATEPICKER */
+.datepicker-popup{position:fixed;background:var(--bg2);border:1px solid var(--br);border-radius:16px;padding:16px;z-index:11000;box-shadow:0 16px 48px var(--sh3);display:none;width:280px;}
+.datepicker-popup.show{display:block;}
+.dp-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+.dp-nav{width:28px;height:28px;background:var(--bg3);color:var(--t2);cursor:pointer;border-radius:8px;display:flex;align-items:center;justify-content:center;transition:.2s;border:none;}
+.dp-nav:hover{background:var(--ac3);color:var(--ac);}
+.dp-nav svg{width:13px;height:13px;}
+.dp-title{font-size:13px;font-weight:600;color:var(--t1);}
+.dp-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin-bottom:8px;}
+.dp-wd{text-align:center;font-size:9px;font-weight:600;color:var(--t2);padding:4px 0;}
+.dp-day{aspect-ratio:1;display:flex;align-items:center;justify-content:center;border-radius:7px;cursor:pointer;font-size:11px;font-weight:500;color:var(--t1);transition:all .15s;border:none;background:transparent;}
+.dp-day:hover{background:var(--bg3);}
+.dp-day.om{color:var(--t3);}
+.dp-day.today{background:var(--ac);color:#fff;font-weight:700;}
+.dp-day.sel:not(.today){background:var(--ac3);color:var(--ac);font-weight:600;}
+.dp-clear{margin-top:8px;width:100%;padding:7px;background:var(--bg3);border:none;border-radius:8px;color:var(--t2);font-size:12px;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer;transition:.2s;}
+.dp-clear:hover{background:var(--bg4);color:var(--t1);}
+
+/* TIMEPICKER */
+.timepicker-popup{position:fixed;background:var(--bg2);border:1px solid var(--br);border-radius:16px;padding:16px;z-index:11000;box-shadow:0 16px 48px var(--sh3);display:none;width:220px;}
+.timepicker-popup.show{display:block;}
+.tp-row{display:flex;align-items:center;gap:8px;margin-bottom:12px;}
+.tp-label{font-size:11px;font-weight:600;color:var(--t2);white-space:nowrap;}
+.tp-inputs{display:flex;align-items:center;gap:4px;flex:1;}
+.tp-input{width:52px;padding:7px 8px;border:1px solid var(--br);border-radius:8px;background:var(--bg3);color:var(--t1);font-size:14px;font-family:'Inter',sans-serif;text-align:center;transition:.2s;}
+.tp-input:focus{outline:none;border-color:var(--ac);background:var(--bg2);}
+.tp-sep{font-size:16px;font-weight:600;color:var(--t2);}
+.tp-btns{display:flex;gap:6px;}
+.tp-btn{flex:1;padding:7px;border:none;border-radius:8px;font-size:12px;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer;transition:.2s;}
+.tp-btn.clear{background:var(--bg3);color:var(--t2);}
+.tp-btn.clear:hover{background:var(--bg4);}
+.tp-btn.save{background:var(--ac);color:#fff;}
+.tp-btn.save:hover{opacity:.9;}
+
+/* MODAL */
+.modal{display:none;position:fixed;z-index:2000;left:0;top:0;width:100%;height:100%;background:rgba(44,40,37,.5);backdrop-filter:blur(4px);align-items:center;justify-content:center;}
 .modal.show{display:flex;}
-.mc{
-background:var(--bg2);padding:26px;border-radius:20px;
-max-width:460px;width:90%;max-height:90vh;overflow-y:auto;
-box-shadow:0 24px 48px rgba(0,0,0,.18);
-}
+.mc{background:var(--bg2);padding:26px;border-radius:20px;max-width:460px;width:90%;max-height:90vh;overflow-y:auto;box-shadow:0 24px 48px rgba(0,0,0,.18);}
 .mc-title{font-family:'Playfair Display',serif;font-size:19px;font-weight:500;margin-bottom:18px;}
 .fg{margin-bottom:13px;}
 .fg label{display:block;font-size:11px;font-weight:600;margin-bottom:4px;color:var(--t2);text-transform:uppercase;letter-spacing:.5px;}
-.fg input,.fg select,.fg textarea{
-width:100%;padding:9px 12px;border:1px solid var(--br);border-radius:10px;
-background:var(--bg3);color:var(--t1);font-size:13px;font-family:'Inter',sans-serif;transition:.2s;
-}
+.fg input,.fg select,.fg textarea{width:100%;padding:9px 12px;border:1px solid var(--br);border-radius:10px;background:var(--bg3);color:var(--t1);font-size:13px;font-family:'Inter',sans-serif;transition:.2s;}
 .fg input:focus,.fg select:focus,.fg textarea:focus{outline:none;border-color:var(--ac);background:var(--bg2);}
 .fg textarea{resize:vertical;min-height:65px;}
 .fg-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 .wdpick{display:flex;gap:4px;flex-wrap:wrap;}
-.wdbtn{
-padding:5px 9px;border:1px solid var(--br);border-radius:7px;
-background:var(--bg3);color:var(--t2);cursor:pointer;
-font-size:11px;font-weight:600;font-family:'Inter',sans-serif;transition:.2s;
-}
+.wdbtn{padding:5px 9px;border:1px solid var(--br);border-radius:7px;background:var(--bg3);color:var(--t2);cursor:pointer;font-size:11px;font-weight:600;font-family:'Inter',sans-serif;transition:.2s;}
 .wdbtn.sel{background:var(--ac);border-color:var(--ac);color:#fff;}
 .mf{display:flex;gap:8px;justify-content:flex-end;margin-top:18px;}
-.mf-btn{
-padding:9px 18px;border:1px solid var(--br);border-radius:10px;
-cursor:pointer;font-size:13px;font-weight:600;font-family:'Inter',sans-serif;transition:.2s;
-}
+.mf-btn{padding:9px 18px;border:1px solid var(--br);border-radius:10px;cursor:pointer;font-size:13px;font-weight:600;font-family:'Inter',sans-serif;transition:.2s;}
 .mf-btn.cancel{background:var(--bg3);color:var(--t2);}
 .mf-btn.cancel:hover{background:var(--bg4);color:var(--t1);}
-.mf-btn.save{
-background:linear-gradient(135deg,var(--ac),var(--ac2));
-color:#fff;border-color:transparent;box-shadow:0 4px 12px var(--sh1);
-}
+.mf-btn.save{background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff;border-color:transparent;box-shadow:0 4px 12px var(--sh1);}
 .mf-btn.save:hover{opacity:.9;}
 .mf-btn.danger{background:var(--red2);color:var(--red);border-color:var(--red);}
 .confirm-btns{display:flex;gap:10px;justify-content:center;margin-top:14px;}
-.toast{
-position:fixed;bottom:22px;right:22px;
-background:var(--t1);color:var(--bg2);
-padding:11px 17px;border-radius:11px;
-font-size:13px;font-weight:500;
-box-shadow:0 8px 24px var(--sh3);
-z-index:3000;opacity:0;transform:translateY(10px);
-transition:.3s;pointer-events:none;
-}
+
+/* TOAST */
+.toast{position:fixed;bottom:22px;right:22px;background:var(--t1);color:var(--bg2);padding:11px 17px;border-radius:11px;font-size:13px;font-weight:500;box-shadow:0 8px 24px var(--sh3);z-index:3000;opacity:0;transform:translateY(10px);transition:.3s;pointer-events:none;}
 .toast.show{opacity:1;transform:translateY(0);}
+
+/* SCROLLBAR */
 ::-webkit-scrollbar{width:4px;}
 ::-webkit-scrollbar-track{background:transparent;}
 ::-webkit-scrollbar-thumb{background:var(--br);border-radius:2px;}
 ::-webkit-scrollbar-thumb:hover{background:var(--t3);}
 </style>
+</head>
+<body>
+
+<!-- HEADER -->
 <header class="header">
     <div class="header-left">
         <button class="logo-btn" id="logoBtn">
@@ -495,53 +337,57 @@ transition:.3s;pointer-events:none;
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 12h6M9 16h4"/></svg>
             </div>
             <span class="logo-text">Планер</span>
-            <span class="logo-space" id="currentSpaceName"></span>
         </button>
-        <div class="header-divider"></div>
-        <button class="header-icon-btn" id="spacesBtn" title="Пространства">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        <span class="logo-space" id="currentSpaceName" style="display:none"></span>
+    </div>
+    <div class="header-right">
+        <button class="header-icon-btn" id="notesBtn" title="Заметки">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/><path d="M16 13H8M16 17H8M10 9H8"/></svg>
         </button>
         <button class="header-icon-btn" id="notifsBtn" title="Уведомления">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
             <span class="notif-badge hidden" id="notifBadge">0</span>
         </button>
+        <button class="header-icon-btn" id="spacesBtn" title="Пространства">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        </button>
         <div class="header-divider"></div>
-        <div class="view-tabs">
-            <button class="view-tab active" data-mode="both">Всё вместе</button>
-            <button class="view-tab" data-mode="planner">Планер</button>
-        </div>
-    </div>
-    <div class="header-right">
-        <button class="icon-btn" id="exportBtn" title="Сохранить копию">
+        <button class="header-icon-btn" id="settingsBtn" title="Настройки">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+        </button>
+        <button class="header-icon-btn" id="exportBtn" title="Экспорт">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
         </button>
-        <button class="icon-btn" id="importBtn" title="Загрузить копию">
+        <button class="header-icon-btn" id="importBtn" title="Импорт">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
         </button>
-        <input type="file" id="fileInput" accept=".json" style="display:none">
-        <input type="file" id="coverInput" accept="image/*" style="display:none">
-        <button class="toggle" id="themeBtn" title="Сменить тему"></button>
+        <button class="toggle" id="themeBtn" title="Тема"></button>
     </div>
 </header>
 
+<!-- APP -->
 <div class="app">
+
+    <!-- PLANNER -->
     <div class="planner" id="planner">
         <div class="planner-top">
             <div class="planner-title">
-                <h2>Задачи на сегодня</h2>
+                <h2 id="plannerTitle">Задачи на сегодня</h2>
                 <p id="todayDate"></p>
             </div>
             <button class="add-btn" id="addBtn">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
                 Новая задача
             </button>
         </div>
+
         <div class="quick-add">
-            <input type="text" id="taskInput" placeholder="Быстро добавить задачу и нажать Enter..." autocomplete="off">
+            <input type="text" id="taskInput" placeholder="Быстро добавить задачу и нажать Enter...">
             <button class="quick-btn" id="quickAddBtn">Добавить</button>
         </div>
+
         <div class="columns">
-            <div class="col" id="col-waiting" data-status="waiting">
+            <div class="col" data-status="waiting">
                 <div class="col-head">
                     <div class="col-label">
                         <div class="col-dot waiting"></div>
@@ -551,7 +397,7 @@ transition:.3s;pointer-events:none;
                 </div>
                 <div class="tlist" id="list-waiting"></div>
             </div>
-            <div class="col" id="col-in-progress" data-status="in-progress">
+            <div class="col" data-status="in-progress">
                 <div class="col-head">
                     <div class="col-label">
                         <div class="col-dot in-progress"></div>
@@ -561,7 +407,7 @@ transition:.3s;pointer-events:none;
                 </div>
                 <div class="tlist" id="list-in-progress"></div>
             </div>
-            <div class="col" id="col-done" data-status="done">
+            <div class="col" data-status="done">
                 <div class="col-head">
                     <div class="col-label">
                         <div class="col-dot done"></div>
@@ -574,6 +420,7 @@ transition:.3s;pointer-events:none;
         </div>
     </div>
 
+    <!-- CALENDAR -->
     <div class="calendar" id="calendar">
         <div class="cal-head">
             <h2>Календарь</h2>
@@ -618,39 +465,50 @@ transition:.3s;pointer-events:none;
                 </button>
             </div>
         </div>
-        <div class="cal-tasks" id="calTasks">
+        <div class="cal-tasks">
             <div class="cal-tasks-head" id="calTasksTitle">Задачи</div>
             <div id="calTasksList"></div>
         </div>
     </div>
+
+</div>
+<!-- /APP -->
+<!-- КОНТЕКСТНОЕ МЕНЮ КАЛЕНДАРЯ -->
+<div class="cal-ctx-menu" id="calCtxMenu">
+    <button class="ddi" id="ctxAddTask">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Добавить задачу
+    </button>
 </div>
 
-<!-- ПРОСТРАНСТВА -->
-<div class="overlay" id="spacesOverlay">
-    <div class="panel">
-        <div class="panel-head">
-            <h2>Мои пространства</h2>
-            <button class="panel-close" id="spacesClose">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-            </button>
-        </div>
-        <div id="spacesContent"></div>
+<!-- ДАТАПИКЕР -->
+<div class="datepicker-popup" id="datepickerPopup">
+    <div class="dp-head">
+        <button class="dp-nav" id="dpPrev">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <span class="dp-title" id="dpTitle"></span>
+        <button class="dp-nav" id="dpNext">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
     </div>
+    <div class="dp-grid" id="dpGrid"></div>
+    <button class="dp-clear" id="dpClear">Очистить</button>
 </div>
 
-<!-- УВЕДОМЛЕНИЯ -->
-<div class="overlay" id="notifsOverlay">
-    <div class="panel notifs-panel">
-        <div class="notifs-head-row">
-            <h2>Уведомления</h2>
-            <div class="notifs-head-right">
-                <button class="notifs-clear-btn" id="clearAllNotifs">Удалить все</button>
-                <button class="panel-close" id="notifsClose">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-                </button>
-            </div>
+<!-- ТАЙМПИКЕР -->
+<div class="timepicker-popup" id="timepickerPopup">
+    <div class="tp-row">
+        <span class="tp-label">Время:</span>
+        <div class="tp-inputs">
+            <input class="tp-input" id="tpHour" type="number" min="0" max="23" placeholder="00">
+            <span class="tp-sep">:</span>
+            <input class="tp-input" id="tpMin" type="number" min="0" max="59" placeholder="00">
         </div>
-        <div id="notifsList"></div>
+    </div>
+    <div class="tp-btns">
+        <button class="tp-btn clear" id="tpClear">Очистить</button>
+        <button class="tp-btn save" id="tpSave">Выбрать</button>
     </div>
 </div>
 
@@ -669,21 +527,27 @@ transition:.3s;pointer-events:none;
         <div class="fg-row">
             <div class="fg">
                 <label>Дата</label>
-                <input type="date" id="mTaskDate">
+                <button class="fg input" id="dpTaskDateBtn" style="cursor:pointer;text-align:left;display:flex;justify-content:space-between;align-items:center;width:100%;padding:9px 12px;border:1px solid var(--br);border-radius:10px;background:var(--bg3);color:var(--t1);font-size:13px;font-family:'Inter',sans-serif;">
+                    <span id="dpTaskDateLabel">Выберите дату</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;color:var(--t2)"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                </button>
             </div>
             <div class="fg">
                 <label>Время</label>
-                <input type="time" id="mTaskTime">
+                <button class="fg input" id="dpTaskTimeBtn" style="cursor:pointer;text-align:left;display:flex;justify-content:space-between;align-items:center;width:100%;padding:9px 12px;border:1px solid var(--br);border-radius:10px;background:var(--bg3);color:var(--t1);font-size:13px;font-family:'Inter',sans-serif;">
+                    <span id="dpTaskTimeLabel">Не указано</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;color:var(--t2)"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                </button>
             </div>
         </div>
         <div class="fg">
             <label>Повторение</label>
             <select id="mTaskRepeat">
                 <option value="none">Без повторения</option>
-                <option value="daily">Каждый день</option>
+                <option value="daily">Ежедневно</option>
                 <option value="weekdays">По дням недели</option>
-                <option value="weekly">Каждую неделю</option>
-                <option value="monthly">Каждый месяц</option>
+                <option value="weekly">Еженедельно</option>
+                <option value="monthly">Ежемесячно</option>
             </select>
         </div>
         <div class="fg" id="weekdaysGroup" style="display:none">
@@ -699,15 +563,18 @@ transition:.3s;pointer-events:none;
             </div>
         </div>
         <div class="fg" id="repeatEndGroup" style="display:none">
-            <label>Повторять до</label>
+            <label>Конец повторения</label>
             <select id="mRepeatEndType">
-                <option value="forever">Без конца</option>
-                <option value="date">До определённой даты</option>
+                <option value="forever">Бессрочно</option>
+                <option value="date">До даты</option>
             </select>
         </div>
         <div class="fg" id="repeatEndDateGroup" style="display:none">
-            <label>Конечная дата</label>
-            <input type="date" id="mRepeatEndDate">
+            <label>Дата окончания</label>
+            <button class="fg input" id="dpEndDateBtn" style="cursor:pointer;text-align:left;display:flex;justify-content:space-between;align-items:center;width:100%;padding:9px 12px;border:1px solid var(--br);border-radius:10px;background:var(--bg3);color:var(--t1);font-size:13px;font-family:'Inter',sans-serif;">
+                <span id="dpEndDateLabel">Выберите дату</span>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;color:var(--t2)"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            </button>
         </div>
         <div class="mf">
             <button class="mf-btn cancel" id="mTaskCancel">Отмена</button>
@@ -716,12 +583,12 @@ transition:.3s;pointer-events:none;
     </div>
 </div>
 
-<!-- МОДАЛКА: ПРОСМОТР -->
+<!-- МОДАЛКА: ПРОСМОТР ЗАДАЧИ -->
 <div class="modal" id="modalView">
     <div class="mc">
         <div class="mc-title" id="vTitle"></div>
-        <div style="font-size:13px;color:var(--t2);margin-bottom:6px;line-height:1.5" id="vNote"></div>
-        <div style="font-size:12px;color:var(--t2);margin-bottom:16px" id="vMeta"></div>
+        <p id="vMeta" style="font-size:12px;color:var(--t2);margin-bottom:12px;line-height:1.6"></p>
+        <p id="vNote" style="font-size:13px;color:var(--t1);line-height:1.6;white-space:pre-wrap"></p>
         <div class="mf">
             <button class="mf-btn cancel" id="vClose">Закрыть</button>
             <button class="mf-btn cancel" id="vEdit">Редактировать</button>
@@ -730,7 +597,7 @@ transition:.3s;pointer-events:none;
     </div>
 </div>
 
-<!-- МОДАЛКА: УДАЛЕНИЕ ЗАДАЧИ -->
+<!-- МОДАЛКА: ПОДТВЕРЖДЕНИЕ УДАЛЕНИЯ ЗАДАЧИ -->
 <div class="modal" id="modalConfirm">
     <div class="mc">
         <div class="mc-title">Удалить задачу?</div>
@@ -739,7 +606,9 @@ transition:.3s;pointer-events:none;
             <button class="mf-btn cancel" id="delToday">Только сегодня</button>
             <button class="mf-btn danger" id="delAll">Удалить все</button>
         </div>
-        <div class="mf"><button class="mf-btn cancel" id="delCancel">Отмена</button></div>
+        <div class="mf">
+            <button class="mf-btn cancel" id="delCancel">Отмена</button>
+        </div>
     </div>
 </div>
 
@@ -747,6 +616,18 @@ transition:.3s;pointer-events:none;
 <div class="modal" id="modalSpace">
     <div class="mc">
         <div class="mc-title" id="modalSpaceTitle">Новое пространство</div>
+        <div class="space-type-choice" id="spaceTypeChoice">
+            <button class="space-type-btn selected" data-type="tasks">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 12h6M9 16h4"/></svg>
+                <h4>Задачи</h4>
+                <p>Планирование и управление задачами</p>
+            </button>
+            <button class="space-type-btn" data-type="notes">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/><path d="M16 13H8M16 17H8M10 9H8"/></svg>
+                <h4>Заметки</h4>
+                <p>Свободные записи и заметки</p>
+            </button>
+        </div>
         <div class="fg">
             <label>Название</label>
             <input type="text" id="mSpaceName" placeholder="Например: Работа, Личное...">
@@ -762,7 +643,7 @@ transition:.3s;pointer-events:none;
 <div class="modal" id="modalSpaceDelete">
     <div class="mc">
         <div class="mc-title">Удалить пространство?</div>
-        <p style="font-size:13px;color:var(--t2);line-height:1.6">Вы точно хотите удалить пространство?<br>Оно будет удалено безвозвратно вместе со всеми задачами.</p>
+        <p style="font-size:13px;color:var(--t2);line-height:1.6">Вы точно хотите удалить пространство?<br>Все задачи будут удалены безвозвратно.</p>
         <div class="confirm-btns">
             <button class="mf-btn cancel" id="spDelCancel">Отмена</button>
             <button class="mf-btn danger" id="spDelConfirm">Удалить</button>
@@ -770,7 +651,90 @@ transition:.3s;pointer-events:none;
     </div>
 </div>
 
-<div class="floating-notif-container" id="floatingNotifContainer"></div>
+<!-- OVERLAY: ПРОСТРАНСТВА -->
+<div class="overlay" id="spacesOverlay">
+    <div class="panel">
+        <div class="panel-head">
+            <h2>Пространства</h2>
+            <button class="panel-close" id="spacesClose">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+        </div>
+        <div id="spacesContent"></div>
+    </div>
+</div>
+
+<!-- OVERLAY: УВЕДОМЛЕНИЯ -->
+<div class="overlay" id="notifsOverlay">
+    <div class="panel notifs-panel">
+        <div class="notifs-head-row">
+            <h2>Уведомления</h2>
+            <div class="notifs-head-right">
+                <button class="notifs-clear-btn" id="clearAllNotifs">Очистить все</button>
+                <button class="panel-close" id="notifsClose">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+            </div>
+        </div>
+        <div id="notifsList"></div>
+    </div>
+</div>
+
+<!-- OVERLAY: НАСТРОЙКИ -->
+<div class="overlay" id="settingsOverlay">
+    <div class="panel settings-panel">
+        <div class="panel-head">
+            <h2>Настройки</h2>
+            <button class="panel-close" id="settingsClose">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+        </div>
+        <div class="settings-section">
+            <div class="settings-section-title">Отображение</div>
+            <div class="settings-item">
+                <div class="settings-item-info">
+                    <h4>Классический режим</h4>
+                    <p>Показывать все задачи, не только сегодняшние</p>
+                </div>
+                <div class="settings-toggle" id="classicModeToggle"></div>
+            </div>
+        </div>
+        <div class="settings-section">
+            <div class="settings-section-title">Уведомления</div>
+            <div class="settings-item">
+                <div class="settings-item-info">
+                    <h4>Браузерные уведомления</h4>
+                    <p>Показывать уведомления о задачах</p>
+                </div>
+                <div class="settings-toggle" id="browserNotifsToggle"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- OVERLAY: ЗАМЕТКИ -->
+<div class="notes-overlay" id="notesOverlay">
+    <div class="notes-panel">
+        <div class="notes-header">
+            <div class="notes-tabs" id="notesTabs"></div>
+            <button class="notes-add-btn" id="notesAddTab">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            </button>
+            <button class="notes-close-btn" id="notesClose">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+        </div>
+        <div class="notes-body">
+            <textarea class="note-editor" id="noteEditor" placeholder="Начните писать..."></textarea>
+        </div>
+    </div>
+</div>
+
+<!-- СКРЫТЫЕ ИНПУТЫ -->
+<input type="file" id="fileInput" accept=".json" style="display:none">
+<input type="file" id="coverInput" accept="image/*" style="display:none">
+
+<!-- TOAST -->
 <div class="toast" id="toast"></div>
 <script>
 // ===== СОСТОЯНИЕ =====
@@ -778,10 +742,20 @@ let db;
 let spaces=[], currentSpaceId=null;
 let tasks=[];
 let notifications=[];
+let notes=[];
 let selectedDate='', calendarDate=new Date(), currentView='month';
 let dragTaskId=null, editingTaskId=null, deletingTaskId=null;
 let selectedWeekDays=[], deletingSpaceId=null, editingCoverSpaceId=null;
 let taskTimers=[];
+let currentNoteId=null;
+let classicMode=false;
+let browserNotifsEnabled=false;
+let selectedSpaceType='tasks';
+let dpCurrentTarget=null;
+let dpTaskDate='', dpTaskTime='', dpEndDate='';
+let movingTaskId=null;
+let ctxMenuDate='';
+let dpDate=new Date();
 
 const MONTHS=['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
 const WDAYS_FULL=['Воскресенье','Понедельник','Вторник','Среда','Четверг','Пятница','Суббота'];
@@ -799,6 +773,7 @@ function parseDate(s){
     return new Date(y,m-1,d);
 }
 function formatDate(s){
+    if(!s)return '';
     return parseDate(s).toLocaleDateString('ru-RU',{day:'numeric',month:'long',year:'numeric'});
 }
 function formatTime(){
@@ -821,7 +796,7 @@ function showToast(msg){
 // ===== INDEXEDDB =====
 function initDB(){
     return new Promise((resolve,reject)=>{
-        const req=indexedDB.open('PlannerDB',4);
+        const req=indexedDB.open('PlannerDB',5);
         req.onupgradeneeded=e=>{
             const d=e.target.result;
             if(!d.objectStoreNames.contains('tasks'))
@@ -832,6 +807,8 @@ function initDB(){
                 d.createObjectStore('spaces',{keyPath:'id'});
             if(!d.objectStoreNames.contains('notifications'))
                 d.createObjectStore('notifications',{keyPath:'id'});
+            if(!d.objectStoreNames.contains('notes'))
+                d.createObjectStore('notes',{keyPath:'id'});
         };
         req.onsuccess=e=>{db=e.target.result;resolve();};
         req.onerror=()=>reject(req.error);
@@ -873,46 +850,49 @@ function dbPutSetting(key,value){
     });
 }
 
+// ===== БРАУЗЕРНЫЕ УВЕДОМЛЕНИЯ =====
+async function requestBrowserNotifs(){
+    if(!('Notification' in window))return false;
+    if(Notification.permission==='granted')return true;
+    if(Notification.permission==='denied')return false;
+    const perm=await Notification.requestPermission();
+    return perm==='granted';
+}
+function sendBrowserNotif(title,body){
+    if(!browserNotifsEnabled)return;
+    if(!('Notification' in window))return;
+    if(Notification.permission!=='granted')return;
+    new Notification(title,{body});
+}
+
 // ===== УВЕДОМЛЕНИЯ =====
 async function addNotification(title,text){
-    const notif={
-        id:genId(),title,text,
-        time:formatTime(),
-        date:getTodayStr(),
-        createdAt:Date.now()
-    };
+    const notif={id:genId(),title,text,time:formatTime(),date:getTodayStr(),createdAt:Date.now()};
     notifications.unshift(notif);
     await dbPut('notifications',notif);
     updateNotifBadge();
     renderNotifsList();
+    sendBrowserNotif(title,text);
 }
-
 async function deleteNotification(id){
     notifications=notifications.filter(n=>n.id!==id);
     await dbDelete('notifications',id);
     updateNotifBadge();
     renderNotifsList();
 }
-
 async function deleteNotificationsByTaskName(taskName){
-    const toDelete=notifications.filter(n=>
-        n.title==='Время задачи!'&&n.text===taskName
-    );
+    const toDelete=notifications.filter(n=>n.title==='Время задачи!'&&n.text===taskName);
     for(const n of toDelete)await dbDelete('notifications',n.id);
-    notifications=notifications.filter(n=>
-        !(n.title==='Время задачи!'&&n.text===taskName)
-    );
+    notifications=notifications.filter(n=>!(n.title==='Время задачи!'&&n.text===taskName));
     updateNotifBadge();
     renderNotifsList();
 }
-
 async function clearAllNotifications(){
     for(const n of notifications)await dbDelete('notifications',n.id);
     notifications=[];
     updateNotifBadge();
     renderNotifsList();
 }
-
 function updateNotifBadge(){
     const badge=document.getElementById('notifBadge');
     if(notifications.length>0){
@@ -922,7 +902,6 @@ function updateNotifBadge(){
         badge.classList.add('hidden');
     }
 }
-
 function renderNotifsList(){
     const list=document.getElementById('notifsList');
     if(!list)return;
@@ -944,10 +923,9 @@ function renderNotifsList(){
                 <div class="notif-text">${escHtml(notif.text)}</div>
                 <div class="notif-time-label">${notif.date} · ${notif.time}</div>
             </div>
-            <button class="notif-del" title="Удалить">
+            <button class="notif-del">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
             </button>`;
-        el.addEventListener('click',()=>deleteNotification(notif.id));
         el.querySelector('.notif-del').addEventListener('click',e=>{
             e.stopPropagation();
             deleteNotification(notif.id);
@@ -956,12 +934,8 @@ function renderNotifsList(){
     });
 }
 
-// ===== ТАЙМЕРЫ ЗАДАЧ =====
-function clearAllTimers(){
-    taskTimers.forEach(t=>clearTimeout(t));
-    taskTimers=[];
-}
-
+// ===== ТАЙМЕРЫ =====
+function clearAllTimers(){taskTimers.forEach(t=>clearTimeout(t));taskTimers=[];}
 function scheduleTask(task){
     if(!task.time||task.date!==getTodayStr())return;
     const[h,m]=task.time.split(':').map(Number);
@@ -976,41 +950,327 @@ function scheduleTask(task){
     },diff);
     taskTimers.push(timer);
 }
-
 function scheduleAllTasks(){
     clearAllTimers();
-    const today=getTodayStr();
-    tasks.filter(t=>t.date===today&&t.time).forEach(scheduleTask);
+    tasks.filter(t=>t.date===getTodayStr()&&t.time).forEach(scheduleTask);
 }
 
+// ===== ЗАМЕТКИ =====
+function getSpaceNotes(){
+    return notes.filter(n=>n.spaceId===currentSpaceId).sort((a,b)=>a.createdAt-b.createdAt);
+}
+async function createNote(){
+    if(!currentSpaceId)return null;
+    const note={id:genId(),spaceId:currentSpaceId,title:'Заметка',content:'',createdAt:Date.now()};
+    notes.push(note);
+    await dbPut('notes',note);
+    return note;
+}
+async function saveNote(id,content){
+    const idx=notes.findIndex(n=>n.id===id);
+    if(idx===-1)return;
+    notes[idx].content=content;
+    await dbPut('notes',notes[idx]);
+}
+async function deleteNote(id){
+    notes=notes.filter(n=>n.id!==id);
+    await dbDelete('notes',id);
+}
+function renderNotesTabs(){
+    const tabs=document.getElementById('notesTabs');
+    const spaceNotes=getSpaceNotes();
+    tabs.innerHTML='';
+    spaceNotes.forEach(note=>{
+        const tab=document.createElement('button');
+        tab.className='note-tab'+(note.id===currentNoteId?' active':'');
+        tab.innerHTML=`<span>${escHtml(note.title)}</span>
+            <button class="note-tab-close" data-id="${note.id}">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>`;
+        tab.addEventListener('click',()=>{
+            currentNoteId=note.id;
+            renderNotesTabs();
+            loadNoteContent();
+        });
+        tab.querySelector('.note-tab-close').addEventListener('click',async e=>{
+            e.stopPropagation();
+            await deleteNote(note.id);
+            const remaining=getSpaceNotes();
+            if(remaining.length===0){
+                document.getElementById('notesOverlay').classList.remove('show');
+                currentNoteId=null;
+            } else {
+                currentNoteId=remaining[remaining.length-1].id;
+                renderNotesTabs();
+                loadNoteContent();
+            }
+        });
+        tabs.appendChild(tab);
+    });
+}
+function loadNoteContent(){
+    const note=notes.find(n=>n.id===currentNoteId);
+    const editor=document.getElementById('noteEditor');
+    editor.value=note?note.content||'':'';
+}
+async function openNotes(){
+    if(!currentSpaceId){showToast('⚠️ Сначала выберите пространство');return;}
+    const spaceNotes=getSpaceNotes();
+    if(spaceNotes.length===0){
+        const note=await createNote();
+        currentNoteId=note.id;
+    } else {
+        if(!currentNoteId||!spaceNotes.find(n=>n.id===currentNoteId)){
+            currentNoteId=spaceNotes[0].id;
+        }
+    }
+    renderNotesTabs();
+    loadNoteContent();
+    document.getElementById('notesOverlay').classList.add('show');
+}
+
+// ===== ОБРАБОТЧИКИ ЗАМЕТОК =====
+document.getElementById('noteEditor').addEventListener('input',async e=>{
+    if(!currentNoteId)return;
+    await saveNote(currentNoteId,e.target.value);
+});
+document.getElementById('notesAddTab').addEventListener('click',async()=>{
+    const note=await createNote();
+    currentNoteId=note.id;
+    renderNotesTabs();
+    loadNoteContent();
+    document.getElementById('noteEditor').focus();
+});
+document.getElementById('notesClose').addEventListener('click',()=>{
+    document.getElementById('notesOverlay').classList.remove('show');
+});
+document.getElementById('notesOverlay').addEventListener('click',e=>{
+    if(e.target===document.getElementById('notesOverlay'))
+        document.getElementById('notesOverlay').classList.remove('show');
+});
+document.getElementById('notesBtn').addEventListener('click',()=>openNotes());
+
+// ===== НАСТРОЙКИ =====
+document.getElementById('settingsBtn').addEventListener('click',()=>{
+    updateSettingsUI();
+    document.getElementById('settingsOverlay').classList.add('show');
+});
+document.getElementById('settingsClose').addEventListener('click',()=>{
+    document.getElementById('settingsOverlay').classList.remove('show');
+});
+document.getElementById('settingsOverlay').addEventListener('click',e=>{
+    if(e.target===document.getElementById('settingsOverlay'))
+        document.getElementById('settingsOverlay').classList.remove('show');
+});
+function updateSettingsUI(){
+    document.getElementById('classicModeToggle').classList.toggle('on',classicMode);
+    document.getElementById('browserNotifsToggle').classList.toggle('on',browserNotifsEnabled);
+}
+document.getElementById('classicModeToggle').addEventListener('click',async()=>{
+    classicMode=!classicMode;
+    await dbPutSetting('classicMode',classicMode);
+    updateSettingsUI();
+    renderPlanner();
+    showToast(classicMode?'📋 Классический режим':'✨ Обычный режим');
+});
+document.getElementById('browserNotifsToggle').addEventListener('click',async()=>{
+    if(!browserNotifsEnabled){
+        const granted=await requestBrowserNotifs();
+        if(!granted){showToast('❌ Уведомления заблокированы');return;}
+        browserNotifsEnabled=true;
+    } else {
+        browserNotifsEnabled=false;
+    }
+    await dbPutSetting('browserNotifs',browserNotifsEnabled);
+    updateSettingsUI();
+    showToast(browserNotifsEnabled?'🔔 Уведомления включены':'🔕 Уведомления выключены');
+});
+</script>
+<script>
+// ===== ДАТАПИКЕР =====
+function renderDatepicker(){
+    const grid=document.getElementById('dpGrid');
+    const title=document.getElementById('dpTitle');
+    const y=dpDate.getFullYear(),m=dpDate.getMonth();
+    title.textContent=`${MONTHS[m]} ${y}`;
+    grid.innerHTML='';
+    ['Пн','Вт','Ср','Чт','Пт','Сб','Вс'].forEach(d=>{
+        const el=document.createElement('div');
+        el.className='dp-wd';el.textContent=d;grid.appendChild(el);
+    });
+    const firstDay=new Date(y,m,1);
+    const lastDay=new Date(y,m+1,0);
+    const today=getTodayStr();
+    let offset=firstDay.getDay()-1;
+    if(offset<0)offset=6;
+    for(let i=0;i<offset;i++)grid.appendChild(makeDpDay(new Date(y,m,1-offset+i),true,today));
+    for(let i=1;i<=lastDay.getDate();i++)grid.appendChild(makeDpDay(new Date(y,m,i),false,today));
+    const total=offset+lastDay.getDate();
+    const rem=total%7===0?0:7-(total%7);
+    for(let i=1;i<=rem;i++)grid.appendChild(makeDpDay(new Date(y,m+1,i),true,today));
+}
+
+function makeDpDay(d,otherMonth,today){
+    const ds=dateStr(d);
+    const el=document.createElement('button');
+    el.className='dp-day';el.type='button';el.textContent=d.getDate();
+    if(otherMonth)el.classList.add('om');
+    if(ds===today)el.classList.add('today');
+    const sel=dpCurrentTarget==='enddate'?dpEndDate:dpTaskDate;
+    if(ds===sel&&!el.classList.contains('today'))el.classList.add('sel');
+    el.addEventListener('click',()=>{
+        if(dpCurrentTarget==='move'){
+            if(movingTaskId){
+                updateTask(movingTaskId,{date:ds});
+                showToast(`📅 Перенесено на ${formatDate(ds)}`);
+                movingTaskId=null;
+            }
+        } else if(dpCurrentTarget==='enddate'){
+            dpEndDate=ds;
+            document.getElementById('dpEndDateLabel').textContent=formatDate(ds);
+        } else {
+            dpTaskDate=ds;
+            document.getElementById('dpTaskDateLabel').textContent=formatDate(ds);
+        }
+        closeDatepicker();
+    });
+    return el;
+}
+
+function openDatepicker(target,anchorEl){
+    dpCurrentTarget=target;
+    const popup=document.getElementById('datepickerPopup');
+    const rect=anchorEl.getBoundingClientRect();
+    dpDate=new Date();
+    if(target==='date'&&dpTaskDate)dpDate=parseDate(dpTaskDate);
+    if(target==='enddate'&&dpEndDate)dpDate=parseDate(dpEndDate);
+    renderDatepicker();
+    popup.style.top=(rect.bottom+4)+'px';
+    popup.style.left=Math.min(rect.left,window.innerWidth-290)+'px';
+    popup.classList.add('show');
+}
+
+function closeDatepicker(){
+    document.getElementById('datepickerPopup').classList.remove('show');
+    dpCurrentTarget=null;
+}
+
+function openMoveTaskDatepicker(taskId,anchorEl){
+    movingTaskId=taskId;
+    dpCurrentTarget='move';
+    const popup=document.getElementById('datepickerPopup');
+    const rect=anchorEl.getBoundingClientRect();
+    dpDate=new Date();
+    renderDatepicker();
+    popup.style.top=(rect.bottom+4)+'px';
+    popup.style.left=Math.min(rect.left,window.innerWidth-290)+'px';
+    popup.classList.add('show');
+}
+
+document.getElementById('dpPrev').addEventListener('click',()=>{
+    dpDate.setMonth(dpDate.getMonth()-1);renderDatepicker();
+});
+document.getElementById('dpNext').addEventListener('click',()=>{
+    dpDate.setMonth(dpDate.getMonth()+1);renderDatepicker();
+});
+document.getElementById('dpClear').addEventListener('click',()=>{
+    if(dpCurrentTarget==='enddate'){
+        dpEndDate='';
+        document.getElementById('dpEndDateLabel').textContent='Выберите дату';
+    } else {
+        dpTaskDate='';
+        document.getElementById('dpTaskDateLabel').textContent='Выберите дату';
+    }
+    closeDatepicker();
+});
+document.getElementById('dpTaskDateBtn').addEventListener('click',e=>{
+    e.stopPropagation();
+    document.getElementById('timepickerPopup').classList.remove('show');
+    openDatepicker('date',document.getElementById('dpTaskDateBtn'));
+});
+document.getElementById('dpEndDateBtn').addEventListener('click',e=>{
+    e.stopPropagation();
+    document.getElementById('timepickerPopup').classList.remove('show');
+    openDatepicker('enddate',document.getElementById('dpEndDateBtn'));
+});
+document.getElementById('dpTaskTimeBtn').addEventListener('click',e=>{
+    e.stopPropagation();
+    document.getElementById('datepickerPopup').classList.remove('show');
+    const popup=document.getElementById('timepickerPopup');
+    const rect=e.currentTarget.getBoundingClientRect();
+    if(dpTaskTime){
+        const[h,m]=dpTaskTime.split(':');
+        document.getElementById('tpHour').value=h;
+        document.getElementById('tpMin').value=m;
+    } else {
+        document.getElementById('tpHour').value='';
+        document.getElementById('tpMin').value='';
+    }
+    popup.style.top=(rect.bottom+4)+'px';
+    popup.style.left=Math.min(rect.left,window.innerWidth-230)+'px';
+    popup.classList.add('show');
+});
+document.getElementById('tpSave').addEventListener('click',()=>{
+    const h=String(document.getElementById('tpHour').value).padStart(2,'0');
+    const m=String(document.getElementById('tpMin').value).padStart(2,'0');
+    if(h===''||m===''){showToast('⚠️ Введите время');return;}
+    if(parseInt(h)<0||parseInt(h)>23||parseInt(m)<0||parseInt(m)>59){
+        showToast('⚠️ Неверное время');return;
+    }
+    dpTaskTime=`${h}:${m}`;
+    document.getElementById('dpTaskTimeLabel').textContent=dpTaskTime;
+    document.getElementById('timepickerPopup').classList.remove('show');
+});
+document.getElementById('tpClear').addEventListener('click',()=>{
+    dpTaskTime='';
+    document.getElementById('dpTaskTimeLabel').textContent='Не указано';
+    document.getElementById('timepickerPopup').classList.remove('show');
+});
+
+document.addEventListener('click',e=>{
+    const dp=document.getElementById('datepickerPopup');
+    const tp=document.getElementById('timepickerPopup');
+    const cm=document.getElementById('calCtxMenu');
+    if(dp.classList.contains('show')&&!dp.contains(e.target)&&
+        e.target!==document.getElementById('dpTaskDateBtn')&&
+        e.target!==document.getElementById('dpEndDateBtn'))
+        dp.classList.remove('show');
+    if(tp.classList.contains('show')&&!tp.contains(e.target)&&
+        e.target!==document.getElementById('dpTaskTimeBtn'))
+        tp.classList.remove('show');
+    if(cm.classList.contains('show')&&!cm.contains(e.target))
+        cm.classList.remove('show');
+    document.querySelectorAll('.ddmenu.show').forEach(m=>m.classList.remove('show'));
+});
+
 // ===== ПРОСТРАНСТВА =====
-async function createSpace(name){
-    const space={id:genId(),name,cover:'',createdAt:Date.now()};
+async function createSpace(name,type){
+    const space={id:genId(),name,type:type||'tasks',cover:'',createdAt:Date.now()};
     spaces.push(space);
     await dbPut('spaces',space);
     return space;
 }
-
 async function deleteSpace(id){
     spaces=spaces.filter(s=>s.id!==id);
     await dbDelete('spaces',id);
     const toDelete=tasks.filter(t=>t.spaceId===id);
     for(const t of toDelete)await dbDelete('tasks',t.id);
     tasks=tasks.filter(t=>t.spaceId!==id);
+    const notesDel=notes.filter(n=>n.spaceId===id);
+    for(const n of notesDel)await dbDelete('notes',n.id);
+    notes=notes.filter(n=>n.spaceId!==id);
     if(currentSpaceId===id){
         currentSpaceId=spaces.length>0?spaces[0].id:null;
         await dbPutSetting('currentSpaceId',currentSpaceId);
         if(currentSpaceId)await loadSpaceTasks();
     }
 }
-
 async function updateSpaceCover(id,coverData){
     const idx=spaces.findIndex(s=>s.id===id);
     if(idx===-1)return;
     spaces[idx].cover=coverData;
     await dbPut('spaces',spaces[idx]);
 }
-
 async function switchSpace(id){
     currentSpaceId=id;
     await dbPutSetting('currentSpaceId',id);
@@ -1021,25 +1281,22 @@ async function switchSpace(id){
     renderAll();
     showToast('📁 Пространство открыто');
 }
-
 async function loadSpaceTasks(){
     const all=await dbGetAll('tasks');
     tasks=all.filter(t=>t.spaceId===currentSpaceId);
 }
-
 function updateSpaceHeader(){
     const space=spaces.find(s=>s.id===currentSpaceId);
     const el=document.getElementById('currentSpaceName');
     if(space){el.textContent=space.name;el.style.display='';}
     else{el.textContent='';el.style.display='none';}
 }
-
 function renderSpaces(){
     const content=document.getElementById('spacesContent');
     if(spaces.length===0){
         content.innerHTML=`<div class="spaces-empty">
             <h3>Начнём планировать</h3>
-            <p>Создайте первое пространство для ваших задач</p>
+            <p>Создайте первое пространство</p>
             <button class="spaces-empty-btn" id="createFirstSpace">Создать пространство</button>
         </div>`;
         document.getElementById('createFirstSpace').addEventListener('click',()=>openSpaceModal());
@@ -1051,14 +1308,16 @@ function renderSpaces(){
         const card=document.createElement('div');
         card.className='space-card'+(currentSpaceId===space.id?' active':'');
         const hasCover=!!space.cover;
+        const isNotes=space.type==='notes';
         card.innerHTML=`
             <div class="sc-bg" style="${hasCover?`background-image:url(${space.cover})`:'background:var(--bg4)'}"></div>
             ${hasCover?'<div class="sc-overlay"></div>':''}
             <span class="sc-name${hasCover?'':' light'}">${escHtml(space.name)}</span>
-            <button class="sc-edit" title="Изменить обложку">
+            ${isNotes?'<span class="sc-type-badge">📝</span>':''}
+            <button class="sc-edit">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
             </button>
-            <button class="sc-del" title="Удалить">
+            <button class="sc-del">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
             </button>`;
         card.querySelector('.sc-del').addEventListener('click',e=>{
@@ -1071,7 +1330,10 @@ function renderSpaces(){
             editingCoverSpaceId=space.id;
             document.getElementById('coverInput').click();
         });
-        card.addEventListener('click',()=>switchSpace(space.id));
+        card.addEventListener('click',()=>{
+            switchSpace(space.id);
+            if(isNotes)setTimeout(()=>openNotes(),300);
+        });
         grid.appendChild(card);
     });
     const addCard=document.createElement('button');
@@ -1084,91 +1346,75 @@ function renderSpaces(){
     content.innerHTML='';
     content.appendChild(grid);
 }
-
 function openSpaceModal(){
+    selectedSpaceType='tasks';
     document.getElementById('mSpaceName').value='';
+    document.getElementById('modalSpaceTitle').textContent='Новое пространство';
+    document.querySelectorAll('.space-type-btn').forEach(b=>b.classList.toggle('selected',b.dataset.type==='tasks'));
     document.getElementById('modalSpace').classList.add('show');
     setTimeout(()=>document.getElementById('mSpaceName').focus(),100);
 }
-
-// ОБЛОЖКА
+document.querySelectorAll('.space-type-btn').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+        selectedSpaceType=btn.dataset.type;
+        document.querySelectorAll('.space-type-btn').forEach(b=>b.classList.remove('selected'));
+        btn.classList.add('selected');
+    });
+});
 document.getElementById('coverInput').addEventListener('change',async e=>{
     const file=e.target.files[0];
     if(!file||!editingCoverSpaceId)return;
     const reader=new FileReader();
     reader.onload=async ev=>{
         await updateSpaceCover(editingCoverSpaceId,ev.target.result);
-        renderSpaces();
-        showToast('🖼️ Обложка обновлена');
+        renderSpaces();showToast('🖼️ Обложка обновлена');
         editingCoverSpaceId=null;
     };
     reader.readAsDataURL(file);
     e.target.value='';
 });
-
-// ОБРАБОТЧИКИ ПРОСТРАНСТВ
 document.getElementById('spacesBtn').addEventListener('click',()=>{
-    renderSpaces();
-    document.getElementById('spacesOverlay').classList.add('show');
+    renderSpaces();document.getElementById('spacesOverlay').classList.add('show');
 });
 document.getElementById('logoBtn').addEventListener('click',()=>{
-    renderSpaces();
-    document.getElementById('spacesOverlay').classList.add('show');
+    renderSpaces();document.getElementById('spacesOverlay').classList.add('show');
 });
-document.getElementById('spacesClose').addEventListener('click',()=>{
-    document.getElementById('spacesOverlay').classList.remove('show');
-});
+document.getElementById('spacesClose').addEventListener('click',()=>
+    document.getElementById('spacesOverlay').classList.remove('show'));
 document.getElementById('spacesOverlay').addEventListener('click',e=>{
     if(e.target===document.getElementById('spacesOverlay'))
         document.getElementById('spacesOverlay').classList.remove('show');
 });
-
-// ОБРАБОТЧИКИ УВЕДОМЛЕНИЙ
 document.getElementById('notifsBtn').addEventListener('click',()=>{
-    renderNotifsList();
-    document.getElementById('notifsOverlay').classList.add('show');
+    renderNotifsList();document.getElementById('notifsOverlay').classList.add('show');
 });
-document.getElementById('notifsClose').addEventListener('click',()=>{
-    document.getElementById('notifsOverlay').classList.remove('show');
-});
+document.getElementById('notifsClose').addEventListener('click',()=>
+    document.getElementById('notifsOverlay').classList.remove('show'));
 document.getElementById('notifsOverlay').addEventListener('click',e=>{
     if(e.target===document.getElementById('notifsOverlay'))
         document.getElementById('notifsOverlay').classList.remove('show');
 });
 document.getElementById('clearAllNotifs').addEventListener('click',clearAllNotifications);
-
-// ESC ДЛЯ ОВЕРЛЕЕВ
-document.addEventListener('keydown',e=>{
-    if(e.key==='Escape'){
-        document.getElementById('spacesOverlay').classList.remove('show');
-        document.getElementById('notifsOverlay').classList.remove('show');
-        document.querySelectorAll('.modal.show').forEach(m=>m.classList.remove('show'));
-    }
-});
-
-// МОДАЛКА ПРОСТРАНСТВА
 document.getElementById('mSpaceSave').addEventListener('click',async()=>{
     const name=document.getElementById('mSpaceName').value.trim();
     if(!name){showToast('⚠️ Введите название');return;}
     document.getElementById('modalSpace').classList.remove('show');
-    const space=await createSpace(name);
+    const space=await createSpace(name,selectedSpaceType);
     if(!currentSpaceId)await switchSpace(space.id);
-    renderSpaces();
-    showToast('✅ Пространство создано');
+    renderSpaces();showToast('✅ Пространство создано');
+    if(selectedSpaceType==='notes'){
+        await switchSpace(space.id);
+        setTimeout(()=>openNotes(),300);
+    }
 });
-document.getElementById('mSpaceCancel').addEventListener('click',()=>{
-    document.getElementById('modalSpace').classList.remove('show');
-});
-
-// УДАЛЕНИЕ ПРОСТРАНСТВА
+document.getElementById('mSpaceCancel').addEventListener('click',()=>
+    document.getElementById('modalSpace').classList.remove('show'));
 document.getElementById('spDelConfirm').addEventListener('click',async()=>{
     document.getElementById('modalSpaceDelete').classList.remove('show');
     if(!deletingSpaceId)return;
     await deleteSpace(deletingSpaceId);
     deletingSpaceId=null;
-    renderSpaces();
-    updateSpaceHeader();
-    renderAll();
+    renderSpaces();updateSpaceHeader();renderAll();
     showToast('🗑️ Пространство удалено');
 });
 document.getElementById('spDelCancel').addEventListener('click',()=>{
@@ -1177,9 +1423,10 @@ document.getElementById('spDelCancel').addEventListener('click',()=>{
 });
 </script>
 <script>
-// ===== ПРОВЕРКА: ПОКАЗЫВАТЬ ЛИ ЗАДАЧУ В ПЛАНЕРЕ =====
+// ===== ЗАДАЧИ =====
 function isTaskVisibleInPlanner(task){
     const today=getTodayStr();
+    if(classicMode)return task.date<=today;
     if(task.date!==today)return false;
     if(!task.time)return true;
     const[h,m]=task.time.split(':').map(Number);
@@ -1188,7 +1435,6 @@ function isTaskVisibleInPlanner(task){
     return new Date()>=taskTime;
 }
 
-// ===== ПОВТОРЕНИЯ =====
 function generateDates(startDate,repeat,weekdays,endType,endDate){
     if(repeat==='none')return[startDate];
     const dates=[];
@@ -1198,31 +1444,22 @@ function generateDates(startDate,repeat,weekdays,endType,endDate){
     while(cur<=max&&safety<1000){
         safety++;
         const ds=dateStr(cur);
-        if(repeat==='daily'){
-            dates.push(ds);cur.setDate(cur.getDate()+1);
-        } else if(repeat==='weekdays'){
-            if(weekdays.includes(cur.getDay()))dates.push(ds);
-            cur.setDate(cur.getDate()+1);
-        } else if(repeat==='weekly'){
-            dates.push(ds);cur.setDate(cur.getDate()+7);
-        } else if(repeat==='monthly'){
-            dates.push(ds);cur.setMonth(cur.getMonth()+1);
-        }
+        if(repeat==='daily'){dates.push(ds);cur.setDate(cur.getDate()+1);}
+        else if(repeat==='weekdays'){if(weekdays.includes(cur.getDay()))dates.push(ds);cur.setDate(cur.getDate()+1);}
+        else if(repeat==='weekly'){dates.push(ds);cur.setDate(cur.getDate()+7);}
+        else if(repeat==='monthly'){dates.push(ds);cur.setMonth(cur.getMonth()+1);}
     }
     return dates;
 }
 
-// ===== CRUD ЗАДАЧ =====
 async function addTask(name,note,date,time,repeat,weekdays,endType,endDate){
     if(!currentSpaceId){showToast('⚠️ Сначала выберите пространство');return;}
     const groupId=genId();
     const dates=generateDates(date,repeat,weekdays,endType,endDate);
     for(const d of dates){
         const task={
-            id:genId(),groupId,
-            spaceId:currentSpaceId,
-            name,note:note||'',
-            date:d,time:time||'',
+            id:genId(),groupId,spaceId:currentSpaceId,
+            name,note:note||'',date:d,time:time||'',
             status:'waiting',repeat,
             weekdays:weekdays||[],
             endType:endType||'forever',
@@ -1232,9 +1469,7 @@ async function addTask(name,note,date,time,repeat,weekdays,endType,endDate){
         tasks.push(task);
         await dbPut('tasks',task);
     }
-    scheduleAllTasks();
-    renderAll();
-    showToast('✅ Задача добавлена');
+    scheduleAllTasks();renderAll();showToast('✅ Задача добавлена');
 }
 
 async function updateTask(id,changes){
@@ -1247,13 +1482,10 @@ async function updateTask(id,changes){
 
 async function deleteTask(id){
     const task=tasks.find(t=>t.id===id);
-    if(task){
-        await deleteNotificationsByTaskName(task.name);
-    }
+    if(task)await deleteNotificationsByTaskName(task.name);
     tasks=tasks.filter(t=>t.id!==id);
     await dbDelete('tasks',id);
-    renderAll();
-    showToast('🗑️ Задача удалена');
+    renderAll();showToast('🗑️ Задача удалена');
 }
 
 async function deleteGroup(groupId){
@@ -1263,31 +1495,35 @@ async function deleteGroup(groupId){
         await dbDelete('tasks',t.id);
     }
     tasks=tasks.filter(t=>t.groupId!==groupId);
-    renderAll();
-    showToast('🗑️ Все повторения удалены');
+    renderAll();showToast('🗑️ Все повторения удалены');
 }
 
 function getTasksForDate(ds){return tasks.filter(t=>t.date===ds);}
 function getDatesWithTasks(){return[...new Set(tasks.map(t=>t.date))];}
 
 // ===== РЕНДЕР =====
-function renderAll(){
-    renderPlanner();
-    renderCalendar();
-    renderCalendarTasks();
+function renderAll(){renderPlanner();renderCalendar();renderCalendarTasks();}
+
+function updatePlannerTitle(){
+    const title=document.getElementById('plannerTitle');
+    if(!title)return;
+    const today=getTodayStr();
+    title.textContent=selectedDate===today?'Задачи на сегодня':`Задачи на ${formatDate(selectedDate)}`;
 }
 
 function renderPlanner(){
+    updatePlannerTitle();
     if(!currentSpaceId){
         ['waiting','in-progress','done'].forEach(s=>{
-            document.getElementById('list-'+s).innerHTML='<div class="empty"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/></svg><span>Выберите пространство</span></div>';
+            const el=document.getElementById('list-'+s);
+            if(el)el.innerHTML='<div class="empty"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/></svg><span>Выберите пространство</span></div>';
         });
-        updateCounts();
-        return;
+        updateCounts();return;
     }
     const visibleTasks=tasks.filter(t=>isTaskVisibleInPlanner(t));
     ['waiting','in-progress','done'].forEach(status=>{
         const list=document.getElementById('list-'+status);
+        if(!list)return;
         const filtered=visibleTasks.filter(t=>t.status===status);
         if(filtered.length===0){
             list.innerHTML='<div class="empty"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/></svg><span>Пусто</span></div>';
@@ -1309,7 +1545,6 @@ function createTaskEl(task){
     if(task.time)meta+=`<span class="tag time"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>${task.time}</span>`;
     if(task.repeat&&task.repeat!=='none')meta+=`<span class="tag repeat"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 2l4 4-4 4"/><path d="M3 11V9a4 4 0 014-4h14"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v2a4 4 0 01-4 4H3"/></svg>${rL[task.repeat]}</span>`;
     if(task.note)meta+=`<span class="tag note"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg>Заметка</span>`;
-
     div.innerHTML=`
         <div class="task-check"></div>
         <div class="task-body">
@@ -1321,14 +1556,29 @@ function createTaskEl(task){
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
             </button>
             <div class="ddmenu">
-                <button class="ddi" data-a="view"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>Открыть</button>
-                <button class="ddi" data-a="edit"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Редактировать</button>
+                <button class="ddi" data-a="view">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>Открыть
+                </button>
+                <button class="ddi" data-a="edit">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Редактировать
+                </button>
+                <button class="ddi" data-a="move">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Перенести на дату
+                </button>
                 <div class="ddiv"></div>
-                <button class="ddi" data-a="waiting"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>Ждёт</button>
-                <button class="ddi" data-a="in-progress"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>В процессе</button>
-                <button class="ddi" data-a="done"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>Готово</button>
+                <button class="ddi" data-a="waiting">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>Ждёт
+                </button>
+                <button class="ddi" data-a="in-progress">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>В процессе
+                </button>
+                <button class="ddi" data-a="done">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>Готово
+                </button>
                 <div class="ddiv"></div>
-                <button class="ddi danger" data-a="delete"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg>Удалить</button>
+                <button class="ddi danger" data-a="delete">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg>Удалить
+                </button>
             </div>
         </div>`;
 
@@ -1339,7 +1589,6 @@ function createTaskEl(task){
 
     const mbtn=div.querySelector('.mbtn');
     const ddmenu=div.querySelector('.ddmenu');
-
     mbtn.addEventListener('click',e=>{
         e.stopPropagation();
         document.querySelectorAll('.ddmenu.show').forEach(m=>{if(m!==ddmenu)m.classList.remove('show');});
@@ -1354,6 +1603,7 @@ function createTaskEl(task){
             if(a==='view')openViewModal(task.id);
             else if(a==='edit')openEditModal(task.id);
             else if(a==='delete')openDeleteConfirm(task.id);
+            else if(a==='move')openMoveTaskDatepicker(task.id,btn);
             else updateTask(task.id,{status:a});
         });
     });
@@ -1382,8 +1632,7 @@ function initDragDrop(){
         col.addEventListener('dragover',e=>{e.preventDefault();col.classList.add('over');});
         col.addEventListener('dragleave',()=>col.classList.remove('over'));
         col.addEventListener('drop',async e=>{
-            e.preventDefault();
-            col.classList.remove('over');
+            e.preventDefault();col.classList.remove('over');
             if(!dragTaskId)return;
             await updateTask(dragTaskId,{status:col.dataset.status});
             showToast('📋 Статус обновлён');
@@ -1391,215 +1640,44 @@ function initDragDrop(){
     });
 }
 
-setInterval(()=>renderPlanner(),60000);
-</script>
-<script>
-function renderCalendar(){
-    if(currentView==='month')renderMonth();
-    else if(currentView==='week')renderWeek();
-    else renderDay();
-}
-
-function renderMonth(){
-    const y=calendarDate.getFullYear();
-    const m=calendarDate.getMonth();
-    document.getElementById('monthTitle').textContent=`${MONTHS[m]} ${y}`;
+function initCalendarDragDrop(){
     const grid=document.getElementById('monthGrid');
-    grid.innerHTML='';
-    ['Пн','Вт','Ср','Чт','Пт','Сб','Вс'].forEach(d=>{
-        const el=document.createElement('div');
-        el.className='cwd';
-        el.textContent=d;
-        grid.appendChild(el);
+    grid.addEventListener('dragover',e=>{
+        e.preventDefault();
+        const day=e.target.closest('.cday');
+        if(day)day.style.background='var(--ac3)';
     });
-    const firstDay=new Date(y,m,1);
-    const lastDay=new Date(y,m+1,0);
-    const withTasks=getDatesWithTasks();
-    const today=getTodayStr();
-    let offset=firstDay.getDay()-1;
-    if(offset<0)offset=6;
-    for(let i=0;i<offset;i++){
-        grid.appendChild(makeDayEl(new Date(y,m,1-offset+i),true,withTasks,today));
-    }
-    for(let i=1;i<=lastDay.getDate();i++){
-        grid.appendChild(makeDayEl(new Date(y,m,i),false,withTasks,today));
-    }
-    const total=offset+lastDay.getDate();
-    const rem=total%7===0?0:7-(total%7);
-    for(let i=1;i<=rem;i++){
-        grid.appendChild(makeDayEl(new Date(y,m+1,i),true,withTasks,today));
-    }
-}
-
-function makeDayEl(d,otherMonth,withTasks,today){
-    const ds=dateStr(d);
-    const el=document.createElement('div');
-    el.className='cday';
-    if(otherMonth)el.classList.add('om');
-    if(ds===today)el.classList.add('today');
-    if(ds===selectedDate)el.classList.add('sel');
-    const num=document.createElement('span');
-    num.textContent=d.getDate();
-    el.appendChild(num);
-    if(withTasks.includes(ds)){
-        const dot=document.createElement('div');
-        dot.className='cday-dot';
-        el.appendChild(dot);
-    }
-    el.addEventListener('click',()=>{
-        selectedDate=ds;
-        calendarDate=new Date(d);
-        renderCalendar();
-        renderCalendarTasks();
+    grid.addEventListener('dragleave',e=>{
+        const day=e.target.closest('.cday');
+        if(day)day.style.background='';
     });
-    return el;
-}
-
-function renderWeek(){
-    const today=getTodayStr();
-    const d=new Date(calendarDate);
-    const day=d.getDay();
-    const diff=day===0?-6:1-day;
-    d.setDate(d.getDate()+diff);
-    const ws=new Date(d);
-    const we=new Date(d);
-    we.setDate(we.getDate()+6);
-    document.getElementById('weekTitle').textContent=`${ws.getDate()} ${MONTHS[ws.getMonth()]} – ${we.getDate()} ${MONTHS[we.getMonth()]}`;
-    const grid=document.getElementById('weekGrid');
-    grid.innerHTML='';
-    for(let i=0;i<7;i++){
-        const cur=new Date(ws);
-        cur.setDate(ws.getDate()+i);
-        const ds=dateStr(cur);
-        const count=getTasksForDate(ds).length;
-        const el=document.createElement('div');
-        el.className='wday';
-        if(ds===today)el.classList.add('today');
-        if(ds===selectedDate)el.classList.add('sel');
-        el.innerHTML=`
-            <div class="wday-l">
-                <div class="wday-n">${WDAYS_FULL[cur.getDay()]}</div>
-                <div class="wday-d">${cur.getDate()} ${MONTHS[cur.getMonth()]}</div>
-            </div>
-            ${count>0?`<div class="wday-c">${count}</div>`:''}`;
-        el.addEventListener('click',()=>{
-            selectedDate=ds;
-            calendarDate=new Date(cur);
-            renderCalendar();
-            renderCalendarTasks();
-        });
-        grid.appendChild(el);
-    }
-}
-
-function renderDay(){
-    const d=parseDate(selectedDate);
-    document.getElementById('dayTitle').textContent=`${WDAYS_FULL[d.getDay()]}, ${d.getDate()} ${MONTHS[d.getMonth()]} ${d.getFullYear()}`;
-}
-
-function renderCalendarTasks(){
-    const list=document.getElementById('calTasksList');
-    const title=document.getElementById('calTasksTitle');
-    const dt=getTasksForDate(selectedDate);
-    title.textContent=`Задачи · ${formatDate(selectedDate)}`;
-    if(dt.length===0){
-        list.innerHTML='<div class="empty"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/></svg><span>Нет задач</span></div>';
-        return;
-    }
-    list.innerHTML='';
-    dt.forEach(task=>{
-        const el=document.createElement('div');
-        el.className='ctask';
-        const st={'waiting':'Ждёт','in-progress':'В процессе','done':'Готово'};
-        el.innerHTML=`
-            <div class="ctask-info">
-                <div class="ctask-name">${escHtml(task.name)}</div>
-                ${task.time?`<div class="ctask-time">🕐 ${task.time}</div>`:''}
-            </div>
-            <span class="ctask-st">${st[task.status]||''}</span>`;
-        el.addEventListener('click',()=>openViewModal(task.id));
-        list.appendChild(el);
+    grid.addEventListener('drop',async e=>{
+        e.preventDefault();
+        const day=e.target.closest('.cday');
+        if(day)day.style.background='';
+        if(!dragTaskId||!day)return;
+        const span=day.querySelector('span');
+        if(!span)return;
+        const ds=dateStr(new Date(calendarDate.getFullYear(),calendarDate.getMonth(),parseInt(span.textContent)));
+        await updateTask(dragTaskId,{date:ds});
+        showToast(`📅 Задача перенесена на ${formatDate(ds)}`);
     });
 }
 
-// ===== НАВИГАЦИЯ =====
-document.getElementById('prevMonth').addEventListener('click',()=>{
-    calendarDate.setMonth(calendarDate.getMonth()-1);
-    renderCalendar();
-});
-document.getElementById('nextMonth').addEventListener('click',()=>{
-    calendarDate.setMonth(calendarDate.getMonth()+1);
-    renderCalendar();
-});
-document.getElementById('prevWeek').addEventListener('click',()=>{
-    calendarDate.setDate(calendarDate.getDate()-7);
-    renderCalendar();
-});
-document.getElementById('nextWeek').addEventListener('click',()=>{
-    calendarDate.setDate(calendarDate.getDate()+7);
-    renderCalendar();
-});
-document.getElementById('prevDay').addEventListener('click',()=>{
-    const d=parseDate(selectedDate);
-    d.setDate(d.getDate()-1);
-    selectedDate=dateStr(d);
-    calendarDate=new Date(d);
-    renderCalendar();
-    renderCalendarTasks();
-});
-document.getElementById('nextDay').addEventListener('click',()=>{
-    const d=parseDate(selectedDate);
-    d.setDate(d.getDate()+1);
-    selectedDate=dateStr(d);
-    calendarDate=new Date(d);
-    renderCalendar();
-    renderCalendarTasks();
-});
-
-// ===== ВКЛАДКИ КАЛЕНДАРЯ =====
-document.querySelectorAll('.cal-tab').forEach(tab=>{
-    tab.addEventListener('click',()=>{
-        document.querySelectorAll('.cal-tab').forEach(t=>t.classList.remove('active'));
-        document.querySelectorAll('.cview').forEach(v=>v.classList.remove('active'));
-        tab.classList.add('active');
-        currentView=tab.dataset.view;
-        document.getElementById('view-'+currentView).classList.add('active');
-        renderCalendar();
-    });
-});
-
-// ===== ВКЛАДКИ РЕЖИМА =====
-document.querySelectorAll('.view-tab').forEach(tab=>{
-    tab.addEventListener('click',async()=>{
-        document.querySelectorAll('.view-tab').forEach(t=>t.classList.remove('active'));
-        tab.classList.add('active');
-        const mode=tab.dataset.mode;
-        const planner=document.getElementById('planner');
-        const calendar=document.getElementById('calendar');
-        if(mode==='both'){
-            planner.classList.remove('hidden');
-            calendar.classList.remove('hidden');
-        } else if(mode==='planner'){
-            planner.classList.remove('hidden');
-            calendar.classList.add('hidden');
-        }
-        await dbPutSetting('viewMode',mode);
-    });
-});
-</script>
-<script>
-// ===== МОДАЛКИ =====
+// ===== МОДАЛКИ ЗАДАЧ =====
 function openAddModal(date){
     editingTaskId=null;
     selectedWeekDays=[];
+    dpTaskDate=date||getTodayStr();
+    dpTaskTime='';dpEndDate='';
     document.getElementById('modalTaskTitle').textContent='Новая задача';
     document.getElementById('mTaskName').value='';
     document.getElementById('mTaskNote').value='';
-    document.getElementById('mTaskDate').value=date||getTodayStr();
-    document.getElementById('mTaskTime').value='';
+    document.getElementById('dpTaskDateLabel').textContent=formatDate(dpTaskDate);
+    document.getElementById('dpTaskTimeLabel').textContent='Не указано';
+    document.getElementById('dpEndDateLabel').textContent='Выберите дату';
     document.getElementById('mTaskRepeat').value='none';
     document.getElementById('mRepeatEndType').value='forever';
-    document.getElementById('mRepeatEndDate').value='';
     document.querySelectorAll('.wdbtn').forEach(b=>b.classList.remove('sel'));
     document.getElementById('weekdaysGroup').style.display='none';
     document.getElementById('repeatEndGroup').style.display='none';
@@ -1613,14 +1691,17 @@ function openEditModal(id){
     if(!task)return;
     editingTaskId=id;
     selectedWeekDays=task.weekdays?[...task.weekdays]:[];
+    dpTaskDate=task.date||getTodayStr();
+    dpTaskTime=task.time||'';
+    dpEndDate=task.endDate||'';
     document.getElementById('modalTaskTitle').textContent='Редактировать задачу';
     document.getElementById('mTaskName').value=task.name;
     document.getElementById('mTaskNote').value=task.note||'';
-    document.getElementById('mTaskDate').value=task.date;
-    document.getElementById('mTaskTime').value=task.time||'';
+    document.getElementById('dpTaskDateLabel').textContent=formatDate(dpTaskDate);
+    document.getElementById('dpTaskTimeLabel').textContent=dpTaskTime||'Не указано';
+    document.getElementById('dpEndDateLabel').textContent=dpEndDate?formatDate(dpEndDate):'Выберите дату';
     document.getElementById('mTaskRepeat').value=task.repeat||'none';
     document.getElementById('mRepeatEndType').value=task.endType||'forever';
-    document.getElementById('mRepeatEndDate').value=task.endDate||'';
     document.querySelectorAll('.wdbtn').forEach(b=>{
         b.classList.toggle('sel',selectedWeekDays.includes(Number(b.dataset.day)));
     });
@@ -1661,18 +1742,15 @@ function openDeleteConfirm(id){
     document.getElementById('modalConfirm').classList.add('show');
 }
 
-// ===== ОБРАБОТЧИКИ ЗАДАЧ =====
 document.getElementById('mTaskRepeat').addEventListener('change',function(){
     const v=this.value;
     document.getElementById('weekdaysGroup').style.display=v==='weekdays'?'block':'none';
     document.getElementById('repeatEndGroup').style.display=v!=='none'?'block':'none';
     if(v==='none')document.getElementById('repeatEndDateGroup').style.display='none';
 });
-
 document.getElementById('mRepeatEndType').addEventListener('change',function(){
     document.getElementById('repeatEndDateGroup').style.display=this.value==='date'?'block':'none';
 });
-
 document.querySelectorAll('.wdbtn').forEach(btn=>{
     btn.addEventListener('click',()=>{
         const day=Number(btn.dataset.day);
@@ -1685,20 +1763,19 @@ document.querySelectorAll('.wdbtn').forEach(btn=>{
         }
     });
 });
-
 document.getElementById('mTaskSave').addEventListener('click',async()=>{
     const name=document.getElementById('mTaskName').value.trim();
     if(!name){showToast('⚠️ Введите название');return;}
     const note=document.getElementById('mTaskNote').value.trim();
-    const date=document.getElementById('mTaskDate').value||getTodayStr();
-    const time=document.getElementById('mTaskTime').value;
+    const date=dpTaskDate||getTodayStr();
+    const time=dpTaskTime||'';
     const repeat=document.getElementById('mTaskRepeat').value;
     const endType=document.getElementById('mRepeatEndType').value;
-    const endDate=document.getElementById('mRepeatEndDate').value;
-    if(repeat==='weekdays'&&selectedWeekDays.length===0){
-        showToast('⚠️ Выберите дни недели');return;
-    }
+    const endDate=dpEndDate||'';
+    if(repeat==='weekdays'&&selectedWeekDays.length===0){showToast('⚠️ Выберите дни недели');return;}
     document.getElementById('modalTask').classList.remove('show');
+    document.getElementById('datepickerPopup').classList.remove('show');
+    document.getElementById('timepickerPopup').classList.remove('show');
     if(editingTaskId){
         await updateTask(editingTaskId,{name,note,date,time});
         showToast('✏️ Задача обновлена');
@@ -1706,21 +1783,18 @@ document.getElementById('mTaskSave').addEventListener('click',async()=>{
         await addTask(name,note,date,time,repeat,selectedWeekDays,endType,endDate);
     }
 });
-
 document.getElementById('mTaskCancel').addEventListener('click',()=>{
     document.getElementById('modalTask').classList.remove('show');
+    document.getElementById('datepickerPopup').classList.remove('show');
+    document.getElementById('timepickerPopup').classList.remove('show');
 });
-
-document.getElementById('vClose').addEventListener('click',()=>{
-    document.getElementById('modalView').classList.remove('show');
-});
-
+document.getElementById('vClose').addEventListener('click',()=>
+    document.getElementById('modalView').classList.remove('show'));
 document.getElementById('delToday').addEventListener('click',async()=>{
     document.getElementById('modalConfirm').classList.remove('show');
     if(deletingTaskId)await deleteTask(deletingTaskId);
     deletingTaskId=null;
 });
-
 document.getElementById('delAll').addEventListener('click',async()=>{
     document.getElementById('modalConfirm').classList.remove('show');
     if(deletingTaskId){
@@ -1729,13 +1803,10 @@ document.getElementById('delAll').addEventListener('click',async()=>{
     }
     deletingTaskId=null;
 });
-
 document.getElementById('delCancel').addEventListener('click',()=>{
     document.getElementById('modalConfirm').classList.remove('show');
     deletingTaskId=null;
 });
-
-// ===== БЫСТРОЕ ДОБАВЛЕНИЕ =====
 document.getElementById('addBtn').addEventListener('click',()=>{
     if(!currentSpaceId){
         renderSpaces();
@@ -1743,34 +1814,251 @@ document.getElementById('addBtn').addEventListener('click',()=>{
         showToast('⚠️ Сначала создайте пространство');
         return;
     }
-    openAddModal(getTodayStr());
+    openAddModal(selectedDate||getTodayStr());
 });
-
 document.getElementById('quickAddBtn').addEventListener('click',()=>{
     const val=document.getElementById('taskInput').value.trim();
     if(!val){showToast('⚠️ Введите название');return;}
     if(!currentSpaceId){showToast('⚠️ Сначала выберите пространство');return;}
-    addTask(val,'',getTodayStr(),'','none',[],null,null);
+    addTask(val,'',selectedDate||getTodayStr(),'','none',[],null,null);
     document.getElementById('taskInput').value='';
 });
-
 document.getElementById('taskInput').addEventListener('keydown',e=>{
     if(e.key!=='Enter')return;
     const val=e.target.value.trim();
     if(!val)return;
     if(!currentSpaceId){showToast('⚠️ Сначала выберите пространство');return;}
-    addTask(val,'',getTodayStr(),'','none',[],null,null);
+    addTask(val,'',selectedDate||getTodayStr(),'','none',[],null,null);
     e.target.value='';
 });
-
-// ===== ЗАКРЫТИЕ МЕНЮ И МОДАЛОК =====
-document.addEventListener('click',()=>{
-    document.querySelectorAll('.ddmenu.show').forEach(m=>m.classList.remove('show'));
-});
-
 document.querySelectorAll('.modal').forEach(modal=>{
     modal.addEventListener('click',e=>{
         if(e.target===modal)modal.classList.remove('show');
+    });
+});
+document.addEventListener('keydown',e=>{
+    if(e.key!=='Escape')return;
+    document.querySelectorAll('.modal.show,.overlay.show').forEach(m=>m.classList.remove('show'));
+    document.getElementById('notesOverlay').classList.remove('show');
+    document.getElementById('datepickerPopup').classList.remove('show');
+    document.getElementById('timepickerPopup').classList.remove('show');
+    document.getElementById('calCtxMenu').classList.remove('show');
+});
+</script>
+<script>
+// ===== КАЛЕНДАРЬ =====
+function renderCalendar(){
+    if(currentView==='month')renderMonth();
+    else if(currentView==='week')renderWeek();
+    else renderDay();
+}
+
+function renderMonth(){
+    const y=calendarDate.getFullYear(),m=calendarDate.getMonth();
+    document.getElementById('monthTitle').textContent=`${MONTHS[m]} ${y}`;
+    const grid=document.getElementById('monthGrid');
+    grid.innerHTML='';
+    ['Пн','Вт','Ср','Чт','Пт','Сб','Вс'].forEach(d=>{
+        const el=document.createElement('div');
+        el.className='cwd';el.textContent=d;grid.appendChild(el);
+    });
+    const firstDay=new Date(y,m,1);
+    const lastDay=new Date(y,m+1,0);
+    const withTasks=getDatesWithTasks();
+    const today=getTodayStr();
+    let offset=firstDay.getDay()-1;
+    if(offset<0)offset=6;
+    for(let i=0;i<offset;i++)
+        grid.appendChild(makeDayEl(new Date(y,m,1-offset+i),true,withTasks,today));
+    for(let i=1;i<=lastDay.getDate();i++)
+        grid.appendChild(makeDayEl(new Date(y,m,i),false,withTasks,today));
+    const total=offset+lastDay.getDate();
+    const rem=total%7===0?0:7-(total%7);
+    for(let i=1;i<=rem;i++)
+        grid.appendChild(makeDayEl(new Date(y,m+1,i),true,withTasks,today));
+}
+
+function makeDayEl(d,otherMonth,withTasks,today){
+    const ds=dateStr(d);
+    const el=document.createElement('div');
+    el.className='cday';
+    if(otherMonth)el.classList.add('om');
+    if(ds===today)el.classList.add('today');
+    if(ds===selectedDate)el.classList.add('sel');
+    const num=document.createElement('span');
+    num.textContent=d.getDate();
+    el.appendChild(num);
+    if(withTasks.includes(ds)){
+        const dot=document.createElement('div');
+        dot.className='cday-dot';
+        el.appendChild(dot);
+    }
+    let clickTimer=null;
+    el.addEventListener('click',()=>{
+        if(clickTimer){clearTimeout(clickTimer);clickTimer=null;return;}
+        clickTimer=setTimeout(()=>{
+            clickTimer=null;
+            selectedDate=ds;
+            calendarDate=new Date(d);
+            renderCalendar();
+            renderCalendarTasks();
+        },220);
+    });
+    el.addEventListener('dblclick',()=>{
+        if(clickTimer){clearTimeout(clickTimer);clickTimer=null;}
+        selectedDate=ds;
+        calendarDate=new Date(d);
+        renderCalendar();
+        renderCalendarTasks();
+        renderPlanner();
+        showToast(`📅 ${formatDate(ds)}`);
+    });
+    el.addEventListener('contextmenu',e=>{
+        e.preventDefault();
+        ctxMenuDate=ds;
+        const menu=document.getElementById('calCtxMenu');
+        menu.style.top=e.clientY+'px';
+        menu.style.left=Math.min(e.clientX,window.innerWidth-200)+'px';
+        menu.classList.add('show');
+    });
+    return el;
+}
+
+function renderWeek(){
+    const today=getTodayStr();
+    const d=new Date(calendarDate);
+    const day=d.getDay();
+    const diff=day===0?-6:1-day;
+    d.setDate(d.getDate()+diff);
+    const ws=new Date(d);
+    const we=new Date(d);
+    we.setDate(we.getDate()+6);
+    document.getElementById('weekTitle').textContent=
+        `${ws.getDate()} ${MONTHS[ws.getMonth()]} – ${we.getDate()} ${MONTHS[we.getMonth()]}`;
+    const grid=document.getElementById('weekGrid');
+    grid.innerHTML='';
+    for(let i=0;i<7;i++){
+        const cur=new Date(ws);
+        cur.setDate(ws.getDate()+i);
+        const ds=dateStr(cur);
+        const count=getTasksForDate(ds).length;
+        const el=document.createElement('div');
+        el.className='wday';
+        if(ds===today)el.classList.add('today');
+        if(ds===selectedDate)el.classList.add('sel');
+        el.innerHTML=`
+            <div class="wday-l">
+                <div class="wday-n">${WDAYS_FULL[cur.getDay()]}</div>
+                <div class="wday-d">${cur.getDate()} ${MONTHS[cur.getMonth()]}</div>
+            </div>
+            ${count>0?`<div class="wday-c">${count}</div>`:''}`;
+        let clickTimer=null;
+        el.addEventListener('click',()=>{
+            if(clickTimer){clearTimeout(clickTimer);clickTimer=null;return;}
+            clickTimer=setTimeout(()=>{
+                clickTimer=null;
+                selectedDate=ds;
+                calendarDate=new Date(cur);
+                renderCalendar();
+                renderCalendarTasks();
+            },220);
+        });
+        el.addEventListener('dblclick',()=>{
+            if(clickTimer){clearTimeout(clickTimer);clickTimer=null;}
+            selectedDate=ds;
+            calendarDate=new Date(cur);
+            renderCalendar();
+            renderCalendarTasks();
+            renderPlanner();
+            showToast(`📅 ${formatDate(ds)}`);
+        });
+        el.addEventListener('contextmenu',e=>{
+            e.preventDefault();
+            ctxMenuDate=ds;
+            const menu=document.getElementById('calCtxMenu');
+            menu.style.top=e.clientY+'px';
+            menu.style.left=Math.min(e.clientX,window.innerWidth-200)+'px';
+            menu.classList.add('show');
+        });
+        grid.appendChild(el);
+    }
+}
+
+function renderDay(){
+    const d=parseDate(selectedDate);
+    document.getElementById('dayTitle').textContent=
+        `${WDAYS_FULL[d.getDay()]}, ${d.getDate()} ${MONTHS[d.getMonth()]} ${d.getFullYear()}`;
+}
+
+function renderCalendarTasks(){
+    const list=document.getElementById('calTasksList');
+    const title=document.getElementById('calTasksTitle');
+    if(!list||!title)return;
+    const dt=getTasksForDate(selectedDate);
+    title.textContent=`Задачи · ${formatDate(selectedDate)}`;
+    if(dt.length===0){
+        list.innerHTML='<div class="empty"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/></svg><span>Нет задач</span></div>';
+        return;
+    }
+    list.innerHTML='';
+    dt.forEach(task=>{
+        const el=document.createElement('div');
+        el.className='ctask';
+        const st={'waiting':'Ждёт','in-progress':'В процессе','done':'Готово'};
+        el.innerHTML=`
+            <div class="ctask-info">
+                <div class="ctask-name">${escHtml(task.name)}</div>
+                ${task.time?`<div class="ctask-time">🕐 ${task.time}</div>`:''}
+            </div>
+            <span class="ctask-st">${st[task.status]||''}</span>`;
+        el.addEventListener('click',()=>openViewModal(task.id));
+        list.appendChild(el);
+    });
+}
+
+// ===== КОНТЕКСТНОЕ МЕНЮ =====
+document.getElementById('ctxAddTask').addEventListener('click',()=>{
+    document.getElementById('calCtxMenu').classList.remove('show');
+    if(!currentSpaceId){showToast('⚠️ Сначала выберите пространство');return;}
+    openAddModal(ctxMenuDate);
+});
+
+// ===== НАВИГАЦИЯ КАЛЕНДАРЯ =====
+document.getElementById('prevMonth').addEventListener('click',()=>{
+    calendarDate.setMonth(calendarDate.getMonth()-1);renderCalendar();
+});
+document.getElementById('nextMonth').addEventListener('click',()=>{
+    calendarDate.setMonth(calendarDate.getMonth()+1);renderCalendar();
+});
+document.getElementById('prevWeek').addEventListener('click',()=>{
+    calendarDate.setDate(calendarDate.getDate()-7);renderCalendar();
+});
+document.getElementById('nextWeek').addEventListener('click',()=>{
+    calendarDate.setDate(calendarDate.getDate()+7);renderCalendar();
+});
+document.getElementById('prevDay').addEventListener('click',()=>{
+    const d=parseDate(selectedDate);
+    d.setDate(d.getDate()-1);
+    selectedDate=dateStr(d);
+    calendarDate=new Date(d);
+    renderCalendar();renderCalendarTasks();
+});
+document.getElementById('nextDay').addEventListener('click',()=>{
+    const d=parseDate(selectedDate);
+    d.setDate(d.getDate()+1);
+    selectedDate=dateStr(d);
+    calendarDate=new Date(d);
+    renderCalendar();renderCalendarTasks();
+});
+
+document.querySelectorAll('.cal-tab').forEach(tab=>{
+    tab.addEventListener('click',()=>{
+        document.querySelectorAll('.cal-tab').forEach(t=>t.classList.remove('active'));
+        document.querySelectorAll('.cview').forEach(v=>v.classList.remove('active'));
+        tab.classList.add('active');
+        currentView=tab.dataset.view;
+        document.getElementById('view-'+currentView).classList.add('active');
+        renderCalendar();
     });
 });
 
@@ -1783,7 +2071,12 @@ document.getElementById('themeBtn').addEventListener('click',async()=>{
 // ===== ЭКСПОРТ/ИМПОРТ =====
 document.getElementById('exportBtn').addEventListener('click',async()=>{
     const allTasks=await dbGetAll('tasks');
-    const data=JSON.stringify({spaces,tasks:allTasks,notifications,version:4,exportedAt:new Date().toISOString()},null,2);
+    const allNotes=await dbGetAll('notes');
+    const data=JSON.stringify({
+        spaces,tasks:allTasks,notifications,
+        notes:allNotes,version:5,
+        exportedAt:new Date().toISOString()
+    },null,2);
     const a=document.createElement('a');
     a.href=URL.createObjectURL(new Blob([data],{type:'application/json'}));
     a.download=`planner-backup-${getTodayStr()}.json`;
@@ -1815,12 +2108,17 @@ document.getElementById('fileInput').addEventListener('change',async e=>{
             notifications=data.notifications;
             for(const n of notifications)await dbPut('notifications',n);
         }
+        if(data.notes){
+            const allNotes=await dbGetAll('notes');
+            for(const n of allNotes)await dbDelete('notes',n.id);
+            notes=data.notes;
+            for(const n of notes)await dbPut('notes',n);
+        }
         for(const t of data.tasks)await dbPut('tasks',t);
         if(currentSpaceId)await loadSpaceTasks();
         else tasks=data.tasks;
         updateNotifBadge();
-        renderAll();
-        renderSpaces();
+        renderAll();renderSpaces();
         showToast('📂 Данные загружены');
     }catch{
         showToast('❌ Ошибка загрузки файла');
@@ -1828,24 +2126,21 @@ document.getElementById('fileInput').addEventListener('change',async e=>{
     e.target.value='';
 });
 
-// ===== АВТОСОХРАНЕНИЕ =====
-setInterval(async()=>{
-    const allTasks=await dbGetAll('tasks');
-    if(allTasks.length===0&&spaces.length===0)return;
-    const a=document.createElement('a');
-    a.href=URL.createObjectURL(new Blob([JSON.stringify({spaces,tasks:allTasks,notifications,version:4})],{type:'application/json'}));
-    a.download=`planner-auto-${getTodayStr()}.json`;
-    a.click();
-},3600000);
-
 // ===== ИНИЦИАЛИЗАЦИЯ =====
 async function init(){
     await initDB();
     const savedTheme=await dbGetSetting('theme');
     if(savedTheme==='dark')document.body.classList.add('dark');
+    classicMode=!!(await dbGetSetting('classicMode'));
+    browserNotifsEnabled=!!(await dbGetSetting('browserNotifs'));
+    if(browserNotifsEnabled&&Notification.permission!=='granted'){
+        browserNotifsEnabled=false;
+        await dbPutSetting('browserNotifs',false);
+    }
     spaces=await dbGetAll('spaces');
     notifications=await dbGetAll('notifications');
     notifications.sort((a,b)=>b.createdAt-a.createdAt);
+    notes=await dbGetAll('notes');
     const savedSpaceId=await dbGetSetting('currentSpaceId');
     if(savedSpaceId&&spaces.find(s=>s.id===savedSpaceId)){
         currentSpaceId=savedSpaceId;
@@ -1854,16 +2149,13 @@ async function init(){
     }
     if(currentSpaceId)await loadSpaceTasks();
     selectedDate=getTodayStr();
-    document.getElementById('todayDate').textContent=formatDate(getTodayStr());
-    const savedMode=await dbGetSetting('viewMode');
-    if(savedMode==='planner'){
-        document.querySelectorAll('.view-tab').forEach(t=>t.classList.remove('active'));
-        document.querySelector('.view-tab[data-mode="planner"]').classList.add('active');
-        document.getElementById('calendar').classList.add('hidden');
-    }
+    const todayEl=document.getElementById('todayDate');
+    if(todayEl)todayEl.textContent=formatDate(getTodayStr());
     updateSpaceHeader();
     updateNotifBadge();
+    updateSettingsUI();
     initDragDrop();
+    initCalendarDragDrop();
     scheduleAllTasks();
     renderAll();
     if(spaces.length===0){
@@ -1872,6 +2164,7 @@ async function init(){
     }
 }
 
+setInterval(()=>renderPlanner(),60000);
 init();
 </script>
 </body>
