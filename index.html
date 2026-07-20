@@ -2165,8 +2165,24 @@ document.querySelectorAll('.cal-tab').forEach(tab=>{
 </script>
 <script>
 async function init(){
-    const hasInvite=await checkInviteInUrl();
-    const{data:{session}}=await sb.auth.getSession();
+    try{
+        // Показываем auth экран сразу, не ждём
+        showAuthScreen();
+
+
+
+    const hasInvite=await Promise.race([
+        checkInviteInUrl(),
+        new Promise((_,reject)=>setTimeout(()=>reject(new Error('timeout')),5000))
+    ]).catch(()=>false);
+
+    const sessionResult=await Promise.race([
+        sb.auth.getSession(),
+        new Promise((_,reject)=>setTimeout(()=>reject(new Error('timeout')),5000))
+    ]).catch(()=>({data:{session:null}}));
+
+    const session=sessionResult?.data?.session;
+
     if(session){
         currentUser=session.user;
         if(hasInvite){
@@ -2194,7 +2210,13 @@ async function init(){
             showAuthScreen();
         }
     });
+} catch(e){
+    console.error('Init error:',e);
+    showAuthScreen();
 }
+}
+
+
 
 init();
 </script>
