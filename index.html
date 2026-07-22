@@ -304,6 +304,11 @@ body.dark .toggle::after{transform:translateX(19px);background:#fff;}
 .timepicker-popup.show{display:block;}
 .tp-title{font-size:11px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px;}
 .tp-inputs{display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:14px;}
+<style>
+.tp-input-single{width:100%;padding:12px;border:1px solid var(--br);border-radius:12px;background:var(--bg3);color:var(--t1);font-size:24px;font-weight:700;text-align:center;font-family:'Inter',sans-serif;letter-spacing:2px;margin-bottom:14px;transition:.2s;}
+.tp-input-single:focus{outline:none;border-color:var(--ac);background:var(--bg2);}
+.tp-input-single::placeholder{color:var(--t3);letter-spacing:1px;}
+</style>
 .tp-input{width:52px;padding:8px 4px;border:1px solid var(--br);border-radius:10px;background:var(--bg3);color:var(--t1);font-size:20px;font-weight:700;text-align:center;font-family:'Inter',sans-serif;transition:.2s;}
 .tp-input:focus{outline:none;border-color:var(--ac);background:var(--bg2);}
 .tp-sep{font-size:22px;font-weight:700;color:var(--t1);line-height:1;}
@@ -347,6 +352,10 @@ body.dark .toggle::after{transform:translateX(19px);background:#fff;}
                 <label>Логин</label>
                 <input type="text" id="loginUsername" placeholder="Введите логин..." autocomplete="username">
             </div>
+            <div class="auth-fg">
+                <label>Ник <span style="text-transform:none;font-weight:400;color:var(--t3)">(для новых аккаунтов)</span></label>
+                <input type="text" id="loginNickname" placeholder="Как вас будут видеть другие...">
+            </div>
             <div class="auth-error" id="loginError"></div>
             <button class="auth-btn" id="loginBtn">Войти</button>
         </div>
@@ -366,6 +375,10 @@ body.dark .toggle::after{transform:translateX(19px);background:#fff;}
     </div>
 </div>
 
+<div id="appLoader" style="position:fixed;inset:0;z-index:9500;display:flex;align-items:center;justify-content:center;background:var(--bg1)">
+    <div style="width:44px;height:44px;border:3px solid var(--br);border-top-color:var(--ac);border-radius:50%;animation:spin .8s linear infinite"></div>
+</div>
+<style>@keyframes spin{to{transform:rotate(360deg)}}</style>
 <div id="mainApp" style="display:none">
 <header class="header">
     <div class="header-left">
@@ -506,11 +519,7 @@ body.dark .toggle::after{transform:translateX(19px);background:#fff;}
 <!-- ТАЙМПИКЕР -->
 <div class="timepicker-popup" id="timepickerPopup">
     <div class="tp-title">Время задачи</div>
-    <div class="tp-inputs">
-        <input class="tp-input" id="tpHour" type="number" min="0" max="23" placeholder="00">
-        <span class="tp-sep">:</span>
-        <input class="tp-input" id="tpMin" type="number" min="0" max="59" placeholder="00">
-    </div>
+    <input class="tp-input-single" id="tpSingle" type="text" inputmode="numeric" placeholder="ЧЧ:ММ" maxlength="5">
     <div class="tp-btns">
         <button class="tp-btn clear" id="tpClear">Очистить</button>
         <button class="tp-btn save" id="tpSave">Выбрать</button>
@@ -579,6 +588,12 @@ body.dark .toggle::after{transform:translateX(19px);background:#fff;}
                 <span id="dpEndDateLabel">Выберите дату</span>
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;color:var(--t2)"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
             </button>
+        </div>
+        <div class="fg" id="applyAllGroup" style="display:none">
+            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;text-transform:none;font-weight:500;font-size:13px;color:var(--t1)">
+                <input type="checkbox" id="applyAllCheckbox" style="width:auto;cursor:pointer">
+                Применить ко всем повторениям
+            </label>
         </div>
         <div class="mf">
             <button class="mf-btn cancel" id="mTaskCancel">Отмена</button>
@@ -720,17 +735,50 @@ body.dark .toggle::after{transform:translateX(19px);background:#fff;}
         <div style="display:flex;align-items:center;gap:14px;margin-bottom:20px;padding:14px;background:var(--bg3);border-radius:12px;">
             <div class="user-avatar" style="width:40px;height:40px;font-size:16px" id="modalUserAvatar">?</div>
             <div>
-                <div style="font-size:14px;font-weight:600;color:var(--t1)" id="modalUserLogin"></div>
-                <div style="font-size:12px;color:var(--t2)">Участник</div>
+                <div style="font-size:14px;font-weight:600;color:var(--t1)" id="modalUserNick"></div>
+                <div style="font-size:12px;color:var(--t2)">@<span id="modalUserLogin"></span></div>
             </div>
         </div>
-        <div class="mf">
-            <button class="mf-btn cancel" id="modalUserClose">Закрыть</button>
-            <button class="mf-btn danger" id="logoutBtn">Выйти</button>
+        <div class="fg">
+            <label>Отображаемый ник</label>
+            <div style="display:flex;gap:8px">
+                <input type="text" id="nicknameInput" placeholder="Ваш ник...">
+                <button class="mf-btn save" id="nicknameSaveBtn" style="white-space:nowrap;margin-top:0">Сохранить</button>
+            </div>
+        </div>
+        <div class="settings-section" style="margin-top:8px;margin-bottom:8px">
+            <div class="settings-item">
+                <div class="settings-item-info">
+                    <h4>Тёмная тема</h4>
+                    <p>Синхронизируется между устройствами</p>
+                </div>
+                <div class="settings-toggle" id="accountThemeToggle"></div>
+            </div>
+        </div>
+        <div class="mf" style="justify-content:space-between">
+            <button class="mf-btn danger" id="deleteAccountBtn">Удалить аккаунт</button>
+            <div style="display:flex;gap:8px">
+                <button class="mf-btn cancel" id="modalUserClose">Закрыть</button>
+                <button class="mf-btn danger" id="logoutBtn">Выйти</button>
+            </div>
         </div>
     </div>
 </div>
-
+    <!-- МОДАЛКА: УДАЛЕНИЕ АККАУНТА -->
+<div class="modal" id="modalDeleteAccount">
+    <div class="mc">
+        <div class="mc-title">Удалить аккаунт?</div>
+        <p style="font-size:13px;color:var(--t2);line-height:1.6;margin-bottom:8px">Все ваши пространства, задачи и заметки будут удалены безвозвратно. Вы выйдете из аккаунта.</p>
+        <div class="fg">
+            <label>Введите логин для подтверждения</label>
+            <input type="text" id="deleteAccountConfirm" placeholder="Ваш логин...">
+        </div>
+        <div class="confirm-btns">
+            <button class="mf-btn cancel" id="delAccCancel">Отмена</button>
+            <button class="mf-btn danger" id="delAccConfirm">Удалить навсегда</button>
+        </div>
+    </div>
+</div>
 <!-- OVERLAY: УВЕДОМЛЕНИЯ -->
 <div class="overlay" id="notifsOverlay">
     <div class="panel notifs-panel">
@@ -807,6 +855,8 @@ let dragTaskId=null,editingTaskId=null,deletingTaskId=null;
 let selectedWeekDays=[],deletingSpaceId=null,editingCoverSpaceId=null;
 let taskTimers=[];
 let currentNoteId=null;
+let userProfile=null;
+let profilesCache={};
 let browserNotifsEnabled=false;
 let selectedSpaceType='tasks';
 let dpCurrentTarget=null;
@@ -863,17 +913,24 @@ function scheduleRender(){
 function usernameToEmail(u){return `${u.toLowerCase().trim()}@planner.local`;}
 function getTechPassword(u){return `planner_secret_2024_${u.toLowerCase()}`;}
 
+function hideLoader(){
+    const l=document.getElementById('appLoader');
+    if(l)l.style.display='none';
+}
 function showAuthScreen(){
+    hideLoader();
     document.getElementById('authScreen').classList.add('show');
     document.getElementById('mainApp').style.display='none';
     document.getElementById('inviteScreen').classList.remove('show');
 }
 function showMainApp(){
+    hideLoader();
     document.getElementById('authScreen').classList.remove('show');
     document.getElementById('mainApp').style.display='block';
     document.getElementById('inviteScreen').classList.remove('show');
 }
 function showInviteScreen(){
+    hideLoader();
     document.getElementById('authScreen').classList.remove('show');
     document.getElementById('mainApp').style.display='none';
     document.getElementById('inviteScreen').classList.add('show');
@@ -881,15 +938,23 @@ function showInviteScreen(){
 function updateUserUI(){
     if(!currentUser)return;
     const login=currentUser.email.replace('@planner.local','');
-    const avatar=login.charAt(0).toUpperCase();
-    document.getElementById('userLogin').textContent=login;
+    const nick=userProfile?.nickname||login;
+    const avatar=nick.charAt(0).toUpperCase();
+    document.getElementById('userLogin').textContent=nick;
     document.getElementById('userAvatar').textContent=avatar;
-    document.getElementById('modalUserLogin').textContent=login;
-    document.getElementById('modalUserAvatar').textContent=avatar;
+    const nickEl=document.getElementById('modalUserNick');
+    const loginEl=document.getElementById('modalUserLogin');
+    const avEl=document.getElementById('modalUserAvatar');
+    if(nickEl)nickEl.textContent=nick;
+    if(loginEl)loginEl.textContent=login;
+    if(avEl)avEl.textContent=avatar;
+    const nickInput=document.getElementById('nicknameInput');
+    if(nickInput)nickInput.value=nick;
 }
 
 document.getElementById('loginBtn').addEventListener('click',async()=>{
     const username=document.getElementById('loginUsername').value.trim();
+    const nickname=document.getElementById('loginNickname').value.trim();
     const errEl=document.getElementById('loginError');
     errEl.classList.remove('show');
     if(!username){errEl.textContent='Введите логин';errEl.classList.add('show');return;}
@@ -906,11 +971,56 @@ document.getElementById('loginBtn').addEventListener('click',async()=>{
         await onLogin();return;
     }
     const{data:signUpData,error:signUpError}=await sb.auth.signUp({email,password});
-    btn.disabled=false;btn.textContent='Войти';
-    if(signUpError){errEl.textContent='Ошибка: '+signUpError.message;errEl.classList.add('show');return;}
-    if(signUpData.user){currentUser=signUpData.user;await onLogin();}
+    if(signUpError){
+        btn.disabled=false;btn.textContent='Войти';
+        errEl.textContent='Ошибка: '+signUpError.message;errEl.classList.add('show');return;
+    }
+    if(signUpData.user){
+        currentUser=signUpData.user;
+        await ensureProfile(username,nickname||username);
+        btn.disabled=false;btn.textContent='Войти';
+        await onLogin();
+    }
 });
 
+    async function ensureProfile(username,nickname){
+    const{data:existing}=await sb.from('profiles')
+        .select('*').eq('user_id',currentUser.id).maybeSingle();
+    if(existing){userProfile=existing;return existing;}
+    const{data}=await sb.from('profiles').insert({
+        user_id:currentUser.id,username,nickname:nickname||username
+    }).select().single();
+    userProfile=data;
+    return data;
+}
+async function loadProfile(){
+    const login=currentUser.email.replace('@planner.local','');
+    const{data}=await sb.from('profiles')
+        .select('*').eq('user_id',currentUser.id).maybeSingle();
+    if(data){userProfile=data;}
+    else{userProfile=await ensureProfile(login,login);}
+}
+async function updateNickname(newNick){
+    if(!newNick.trim())return false;
+    const{error}=await sb.from('profiles')
+        .update({nickname:newNick.trim()}).eq('user_id',currentUser.id);
+    if(error){showToast('❌ Ошибка сохранения ника');return false;}
+    userProfile.nickname=newNick.trim();
+    profilesCache[currentUser.id]=userProfile;
+    updateUserUI();
+    return true;
+}
+async function loadProfilesForUsers(userIds){
+    const missing=userIds.filter(id=>!profilesCache[id]);
+    if(missing.length===0)return;
+    const{data}=await sb.from('profiles').select('*').in('user_id',missing);
+    (data||[]).forEach(p=>{profilesCache[p.user_id]=p;});
+}
+function getDisplayName(userId){
+    const p=profilesCache[userId];
+    if(p)return p.nickname||p.username;
+    return userId.substring(0,8);
+}
 document.getElementById('loginUsername').addEventListener('keydown',e=>{
     if(e.key==='Enter')document.getElementById('loginBtn').click();
 });
@@ -932,7 +1042,57 @@ document.getElementById('modalUserClose').addEventListener('click',()=>{
     document.getElementById('modalUser').classList.remove('show');
 });
 
+document.getElementById('nicknameSaveBtn').addEventListener('click',async()=>{
+    const val=document.getElementById('nicknameInput').value.trim();
+    if(!val){showToast('⚠️ Введите ник');return;}
+    const ok=await updateNickname(val);
+    if(ok)showToast('✅ Ник обновлён');
+});
+
+document.getElementById('accountThemeToggle').addEventListener('click',async()=>{
+    document.body.classList.toggle('dark');
+    const isDark=document.body.classList.contains('dark');
+    updateSettingsUI();
+    await saveUserSetting('theme',isDark?'dark':'light');
+});
+
+document.getElementById('deleteAccountBtn').addEventListener('click',()=>{
+    document.getElementById('modalUser').classList.remove('show');
+    document.getElementById('deleteAccountConfirm').value='';
+    document.getElementById('modalDeleteAccount').classList.add('show');
+});
+document.getElementById('delAccCancel').addEventListener('click',()=>{
+    document.getElementById('modalDeleteAccount').classList.remove('show');
+});
+document.getElementById('delAccConfirm').addEventListener('click',async()=>{
+    const login=currentUser.email.replace('@planner.local','');
+    const confirm=document.getElementById('deleteAccountConfirm').value.trim();
+    if(confirm!==login){showToast('⚠️ Логин не совпадает');return;}
+    await deleteAccount();
+});
+
+async function deleteAccount(){
+    showToast('⏳ Удаление данных...');
+    const ownedSpaces=spaces.filter(s=>s.owner_id===currentUser.id).map(s=>s.id);
+    for(const sid of ownedSpaces){
+        await sb.from('tasks').delete().eq('space_id',sid);
+        await sb.from('notes').delete().eq('space_id',sid);
+        await sb.from('space_members').delete().eq('space_id',sid);
+        await sb.from('spaces').delete().eq('id',sid);
+    }
+    await sb.from('space_members').delete().eq('user_id',currentUser.id);
+    await sb.from('notifications').delete().eq('user_id',currentUser.id);
+    await sb.from('user_settings').delete().eq('user_id',currentUser.id);
+    await sb.from('profiles').delete().eq('user_id',currentUser.id);
+    await sb.auth.signOut();
+    currentUser=null;spaces=[];tasks=[];notifications=[];notes=[];
+    spaceMembers=[];spaceSettings={};currentSpaceId=null;userProfile=null;
+    document.getElementById('modalDeleteAccount').classList.remove('show');
+    showAuthScreen();
+    showToast('🗑️ Аккаунт удалён');
+}
 async function onLogin(){
+    await loadProfile();
     updateUserUI();
     await loadUserSettings();
     await loadSpaces();
@@ -948,6 +1108,7 @@ async function onLogin(){
     if(pendingInviteToken){
         await handleInviteAccept(pendingInviteToken);
         pendingInviteToken=null;
+        window.history.replaceState({},'',window.location.pathname);
     }
     showMainApp();
     scheduleAllTasks();
@@ -958,45 +1119,50 @@ async function onLogin(){
     }
 }
 
-function getSpaceSetting(spaceId,key,def){
-    const s=spaceSettings[spaceId];
-    if(!s)return def;
-    return s[key]!==undefined?s[key]:def;
-}
-function setSpaceSetting(spaceId,key,value){
-    if(!spaceSettings[spaceId])spaceSettings[spaceId]={};
-    spaceSettings[spaceId][key]=value;
-    saveSpaceSettings();
-}
-function saveSpaceSettings(){
-    if(!currentUser)return;
-    localStorage.setItem(`spaceSettings_${currentUser.id}`,JSON.stringify(spaceSettings));
-}
-function isClassicMode(){
-    return getSpaceSetting(currentSpaceId,'classicMode',false);
+async function loadUserSettings(){
+    const{data}=await sb.from('user_settings')
+        .select('*').eq('user_id',currentUser.id).maybeSingle();
+    if(data){
+        browserNotifsEnabled=!!data.browser_notifs;
+        spaceSettings=data.space_modes||{};
+        if(data.theme==='dark')document.body.classList.add('dark');
+        else document.body.classList.remove('dark');
+    } else {
+        await sb.from('user_settings').insert({
+            user_id:currentUser.id,theme:'light',
+            browser_notifs:false,space_modes:{}
+        });
+        browserNotifsEnabled=false;
+        spaceSettings={};
+        document.body.classList.remove('dark');
+    }
 }
 
-async function loadUserSettings(){
-    const saved=localStorage.getItem(`settings_${currentUser.id}`);
-    if(saved){
-        const s=JSON.parse(saved);
-        browserNotifsEnabled=!!s.browserNotifs;
-        if(s.theme==='dark')document.body.classList.add('dark');
-        else document.body.classList.remove('dark');
-    }
-    const ss=localStorage.getItem(`spaceSettings_${currentUser.id}`);
-    if(ss){
-        try{spaceSettings=JSON.parse(ss);}catch(e){spaceSettings={};}
-    }
-}
 async function saveUserSetting(key,value){
-    const saved=localStorage.getItem(`settings_${currentUser.id}`);
-    const s=saved?JSON.parse(saved):{};
-    s[key]=value;
-    localStorage.setItem(`settings_${currentUser.id}`,JSON.stringify(s));
+    const upd={};
+    upd[key]=value;
+    upd.updated_at=new Date().toISOString();
+    await sb.from('user_settings').update(upd).eq('user_id',currentUser.id);
 }
+
+function isClassicMode(){
+    if(!currentSpaceId)return false;
+    return !!spaceSettings[currentSpaceId];
+}
+
+async function setClassicMode(spaceId,value){
+    if(value)spaceSettings[spaceId]=true;
+    else delete spaceSettings[spaceId];
+    await sb.from('user_settings')
+        .update({space_modes:spaceSettings,updated_at:new Date().toISOString()})
+        .eq('user_id',currentUser.id);
+}
+
 function updateSettingsUI(){
-    document.getElementById('browserNotifsToggle').classList.toggle('on',browserNotifsEnabled);
+    const bn=document.getElementById('browserNotifsToggle');
+    if(bn)bn.classList.toggle('on',browserNotifsEnabled);
+    const at=document.getElementById('accountThemeToggle');
+    if(at)at.classList.toggle('on',document.body.classList.contains('dark'));
 }
 
 document.getElementById('settingsBtn').addEventListener('click',()=>{
@@ -1019,13 +1185,15 @@ document.getElementById('browserNotifsToggle').addEventListener('click',async()=
     } else {
         browserNotifsEnabled=false;
     }
-    await saveUserSetting('browserNotifs',browserNotifsEnabled);
+    await saveUserSetting('browser_notifs',browserNotifsEnabled);
     updateSettingsUI();
     showToast(browserNotifsEnabled?'🔔 Уведомления включены':'🔕 Уведомления выключены');
 });
 document.getElementById('themeBtn').addEventListener('click',async()=>{
     document.body.classList.toggle('dark');
-    await saveUserSetting('theme',document.body.classList.contains('dark')?'dark':'light');
+    const isDark=document.body.classList.contains('dark');
+    updateSettingsUI();
+    await saveUserSetting('theme',isDark?'dark':'light');
 });
 </script>
 <script>
@@ -1297,17 +1465,21 @@ async function checkInviteInUrl(){
 }
 
 document.getElementById('inviteAcceptBtn').addEventListener('click',async()=>{
+    const btn=document.getElementById('inviteAcceptBtn');
     if(!currentUser){
         showToast('⚠️ Сначала войдите в аккаунт');
-        document.getElementById('authScreen').classList.add('show');
         document.getElementById('inviteScreen').classList.remove('show');
+        document.getElementById('authScreen').classList.add('show');
         return;
     }
-    if(pendingInviteToken){
-        await handleInviteAccept(pendingInviteToken);
-        pendingInviteToken=null;
-        window.history.replaceState({},'',window.location.pathname);
-    }
+    if(!pendingInviteToken){showToast('❌ Токен не найден');return;}
+    btn.disabled=true;btn.textContent='Подключение...';
+    const token=pendingInviteToken;
+    pendingInviteToken=null;
+    window.history.replaceState({},'',window.location.pathname);
+    await handleInviteAccept(token);
+    btn.disabled=false;btn.textContent='Принять приглашение';
+    showMainApp();
 });
 document.getElementById('inviteDeclineBtn').addEventListener('click',()=>{
     pendingInviteToken=null;
@@ -1380,6 +1552,8 @@ async function openSpaceSettings(){
     }
     deleteBtn.style.display=space.owner_id===currentUser.id?'':'none';
     await loadSpaceMembers(currentSpaceId);
+    const uids=[space.owner_id,...spaceMembers.map(m=>m.user_id)];
+    await loadProfilesForUsers(uids);
     renderSpaceMembers(admin,space);
     membersSection.style.display='';
     document.getElementById('spaceInviteBtn').style.display=admin?'':'none';
@@ -1389,28 +1563,26 @@ async function openSpaceSettings(){
 function renderSpaceMembers(admin,space){
     const list=document.getElementById('spaceMembersList');
     list.innerHTML='';
-    const ownerLogin=space.owner_id;
+    const ownerName=getDisplayName(space.owner_id);
     const ownerItem=document.createElement('div');
     ownerItem.className='member-item';
-    const ownerEmail=space.owner_email||'';
-    const ownerName=ownerEmail?ownerEmail.replace('@planner.local',''):ownerLogin.substring(0,8);
     ownerItem.innerHTML=`
-        <div class="member-avatar">${ownerName.charAt(0).toUpperCase()}</div>
+        <div class="member-avatar">${escHtml(ownerName.charAt(0).toUpperCase())}</div>
         <div class="member-info">
             <div class="member-name">${escHtml(ownerName)}</div>
             <div class="member-role">👑 Владелец</div>
         </div>`;
     list.appendChild(ownerItem);
-    spaceMembers.forEach(member=>{
-        if(member.user_id===space.owner_id)return;
+    const others=spaceMembers.filter(m=>m.user_id!==space.owner_id);
+    others.forEach(member=>{
         const item=document.createElement('div');
         item.className='member-item';
-        const mLogin=member.user_email?member.user_email.replace('@planner.local',''):member.user_id.substring(0,8);
+        const mName=getDisplayName(member.user_id);
         const roleLabel=member.role==='admin'?'⚡ Администратор':'👤 Участник';
         item.innerHTML=`
-            <div class="member-avatar">${mLogin.charAt(0).toUpperCase()}</div>
+            <div class="member-avatar">${escHtml(mName.charAt(0).toUpperCase())}</div>
             <div class="member-info">
-                <div class="member-name">${escHtml(mLogin)}</div>
+                <div class="member-name">${escHtml(mName)}</div>
                 <div class="member-role">${roleLabel}</div>
             </div>
             <div class="member-actions"></div>`;
@@ -1438,24 +1610,26 @@ function renderSpaceMembers(admin,space){
         }
         list.appendChild(item);
     });
-    if(spaceMembers.filter(m=>m.user_id!==space.owner_id).length===0&&!admin){
+    if(others.length===0){
         const empty=document.createElement('div');
         empty.style.cssText='font-size:12px;color:var(--t2);padding:8px 0;';
-        empty.textContent='Только вы в этом пространстве';
+        empty.textContent='Пока только вы в этом пространстве';
         list.appendChild(empty);
     }
 }
 
 async function renderSpaceMembersRefresh(admin,space){
     await loadSpaceMembers(currentSpaceId);
+    const uids=[space.owner_id,...spaceMembers.map(m=>m.user_id)];
+    await loadProfilesForUsers(uids);
     renderSpaceMembers(admin,space);
 }
 
 document.getElementById('logoBtn').addEventListener('click',()=>openSpaceSettings());
 
-document.getElementById('spaceClassicToggle').addEventListener('click',()=>{
+document.getElementById('spaceClassicToggle').addEventListener('click',async()=>{
     const cur=isClassicMode();
-    setSpaceSetting(currentSpaceId,'classicMode',!cur);
+    await setClassicMode(currentSpaceId,!cur);
     document.getElementById('spaceClassicToggle').classList.toggle('on',!cur);
     renderPlanner();
     showToast(!cur?'📋 Классический режим':'✨ Обычный режим');
@@ -1700,6 +1874,19 @@ async function addTask(name,note,date,time,repeat,weekdays,endType,endDate){
     showToast('✅ Задача добавлена');
 }
 
+async function updateGroup(groupId,changes){
+    const allowed=['name','note','time'];
+    const dbChanges={};
+    allowed.forEach(k=>{if(changes[k]!==undefined)dbChanges[k]=changes[k];});
+    if(Object.keys(dbChanges).length===0)return;
+    const{error}=await sb.from('tasks').update(dbChanges)
+        .eq('group_id',groupId).eq('space_id',currentSpaceId);
+    if(error){showToast('❌ Ошибка обновления группы');console.error(error);return;}
+    tasks.forEach(t=>{
+        if(t.group_id===groupId)Object.assign(t,dbChanges);
+    });
+    renderAll();
+}
 async function updateTask(id,changes){
     const allowed=['name','note','date','time','status'];
     const dbChanges={};
@@ -1932,21 +2119,28 @@ function openTaskNotePopup(taskId,anchorEl){
     popup.style.left=anchorEl.closest('.task').getBoundingClientRect().left+'px';
     popup.classList.add('show');
     textarea.focus();
-    textarea.addEventListener('input',()=>{
+    textarea.oninput=()=>{
         if(notePopupSaveTimer)clearTimeout(notePopupSaveTimer);
         notePopupSaveTimer=setTimeout(()=>{
             const t=tasks.find(x=>x.id===notePopupTaskId);
-            if(t)updateTask(notePopupTaskId,{note:textarea.value});
+            if(!t)return;
+            const hasGroup=tasks.filter(x=>x.group_id===t.group_id).length>1;
+            if(hasGroup)updateGroup(t.group_id,{note:textarea.value});
+            else updateTask(notePopupTaskId,{note:textarea.value});
         },800);
-    });
-}
+    };
 
 function closeTaskNotePopup(save=true){
     const popup=document.getElementById('taskNotePopup');
     if(!popup.classList.contains('show'))return;
     if(save&&notePopupTaskId){
         const textarea=document.getElementById('taskNoteTextarea');
-        updateTask(notePopupTaskId,{note:textarea.value});
+        const t=tasks.find(x=>x.id===notePopupTaskId);
+        if(t){
+            const hasGroup=tasks.filter(x=>x.group_id===t.group_id).length>1;
+            if(hasGroup)updateGroup(t.group_id,{note:textarea.value});
+            else updateTask(notePopupTaskId,{note:textarea.value});
+        }
     }
     popup.classList.remove('show');
     notePopupTaskId=null;
@@ -1970,7 +2164,9 @@ function openAddModal(date){
     document.querySelectorAll('.wdbtn').forEach(b=>b.classList.remove('sel'));
     document.getElementById('weekdaysGroup').style.display='none';
     document.getElementById('repeatEndGroup').style.display='none';
-    document.getElementById('repeatEndDateGroup').style.display='none';
+document.getElementById('repeatEndDateGroup').style.display='none';
+    document.getElementById('applyAllGroup').style.display='none';
+    document.getElementById('applyAllCheckbox').checked=false;
     document.getElementById('modalTask').classList.add('show');
     setTimeout(()=>document.getElementById('mTaskName').focus(),100);
 }
@@ -1997,7 +2193,17 @@ function openEditModal(id){
     const rep=task.repeat;
     document.getElementById('weekdaysGroup').style.display=rep==='weekdays'?'block':'none';
     document.getElementById('repeatEndGroup').style.display=rep&&rep!=='none'?'block':'none';
-    document.getElementById('repeatEndDateGroup').style.display=task.end_type==='date'?'block':'none';
+document.getElementById('repeatEndDateGroup').style.display=task.end_type==='date'?'block':'none';
+    const hasGroup=tasks.filter(t=>t.group_id===task.group_id).length>1;
+    const applyGroup=document.getElementById('applyAllGroup');
+    const applyCb=document.getElementById('applyAllCheckbox');
+    if(hasGroup){
+        applyGroup.style.display='block';
+        applyCb.checked=false;
+    } else {
+        applyGroup.style.display='none';
+        applyCb.checked=false;
+    }
     document.getElementById('modalTask').classList.add('show');
 }
 
@@ -2069,13 +2275,19 @@ document.getElementById('mTaskSave').addEventListener('click',async()=>{
     closeDatepicker();
     document.getElementById('timepickerPopup').classList.remove('show');
     if(editingTaskId){
-        await updateTask(editingTaskId,{name,note,date,time});
-        showToast('✏️ Задача обновлена');
+        const applyAll=document.getElementById('applyAllCheckbox').checked;
+        const task=tasks.find(t=>t.id===editingTaskId);
+        if(applyAll&&task){
+            await updateGroup(task.group_id,{name,note,time});
+            showToast('✏️ Обновлены все повторения');
+        } else {
+            await updateTask(editingTaskId,{name,note,date,time});
+            showToast('✏️ Задача обновлена');
+        }
     } else {
         await addTask(name,note,date,time,repeat,selectedWeekDays,endType,endDate);
     }
 });
-
 document.getElementById('mTaskCancel').addEventListener('click',()=>{
     document.getElementById('modalTask').classList.remove('show');
     closeDatepicker();
@@ -2276,26 +2488,33 @@ document.getElementById('dpTaskTimeBtn').addEventListener('click',e=>{
     closeDatepicker();
     const popup=document.getElementById('timepickerPopup');
     const rect=e.currentTarget.getBoundingClientRect();
-    if(dpTaskTime){
-        const[h,m]=dpTaskTime.split(':');
-        document.getElementById('tpHour').value=parseInt(h);
-        document.getElementById('tpMin').value=parseInt(m);
-    } else {
-        document.getElementById('tpHour').value='';
-        document.getElementById('tpMin').value='';
-    }
+    const input=document.getElementById('tpSingle');
+    input.value=dpTaskTime||'';
     let top=rect.bottom+4;
-    if(top+120>window.innerHeight)top=rect.top-124;
+    if(top+140>window.innerHeight)top=rect.top-144;
     popup.style.top=top+'px';
     popup.style.left=Math.min(rect.left,window.innerWidth-210)+'px';
     popup.classList.add('show');
+    setTimeout(()=>input.focus(),50);
+});
+document.getElementById('tpSingle').addEventListener('input',e=>{
+    let v=e.target.value.replace(/[^0-9:]/g,'');
+    v=v.replace(/:/g,'');
+    if(v.length>=3)v=v.slice(0,2)+':'+v.slice(2,4);
+    e.target.value=v;
+});
+document.getElementById('tpSingle').addEventListener('keydown',e=>{
+    if(e.key==='Enter'){e.preventDefault();document.getElementById('tpSave').click();}
 });
 document.getElementById('tpSave').addEventListener('click',()=>{
-    const hVal=document.getElementById('tpHour').value;
-    const mVal=document.getElementById('tpMin').value;
-    if(hVal===''||mVal===''){showToast('⚠️ Введите время');return;}
-    const h=parseInt(hVal),m=parseInt(mVal);
-    if(h<0||h>23||m<0||m>59){showToast('⚠️ Неверное время');return;}
+    const val=document.getElementById('tpSingle').value.trim();
+    if(!val){showToast('⚠️ Введите время');return;}
+    const parts=val.split(':');
+    if(parts.length!==2){showToast('⚠️ Формат ЧЧ:ММ');return;}
+    const h=parseInt(parts[0]),m=parseInt(parts[1]);
+    if(isNaN(h)||isNaN(m)||h<0||h>23||m<0||m>59){
+        showToast('⚠️ Неверное время');return;
+    }
     dpTaskTime=`${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
     document.getElementById('dpTaskTimeLabel').textContent=dpTaskTime;
     document.getElementById('timepickerPopup').classList.remove('show');
@@ -2582,19 +2801,19 @@ document.querySelectorAll('.cal-tab').forEach(tab=>{
 <script>
 async function init(){
     try{
-        showAuthScreen();
         const hasInvite=await Promise.race([
             checkInviteInUrl(),
-            new Promise((_,reject)=>setTimeout(()=>reject(new Error('timeout')),5000))
+            new Promise((_,reject)=>setTimeout(()=>reject(new Error('timeout')),6000))
         ]).catch(()=>false);
         const sessionResult=await Promise.race([
             sb.auth.getSession(),
-            new Promise((_,reject)=>setTimeout(()=>reject(new Error('timeout')),5000))
+            new Promise((_,reject)=>setTimeout(()=>reject(new Error('timeout')),6000))
         ]).catch(()=>({data:{session:null}}));
         const session=sessionResult?.data?.session;
         if(session){
             currentUser=session.user;
             if(hasInvite){
+                await loadProfile();
                 updateUserUI();
                 showInviteScreen();
             } else {
@@ -2604,15 +2823,15 @@ async function init(){
             if(hasInvite)showInviteScreen();
             else showAuthScreen();
         }
-        sb.auth.onAuthStateChange(async(event,session)=>{
-            if(event==='SIGNED_IN'&&session&&!currentUser){
-                currentUser=session.user;
-                await onLogin();
+        sb.auth.onAuthStateChange(async(event,sess)=>{
+            if(event==='SIGNED_IN'&&sess&&!currentUser){
+                currentUser=sess.user;
+                if(!pendingInviteToken)await onLogin();
             }
             if(event==='SIGNED_OUT'){
                 currentUser=null;
                 spaces=[];tasks=[];notifications=[];notes=[];
-                spaceMembers=[];spaceSettings={};
+                spaceMembers=[];spaceSettings={};userProfile=null;
                 currentSpaceId=null;
                 showAuthScreen();
             }
