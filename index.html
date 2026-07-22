@@ -304,11 +304,9 @@ body.dark .toggle::after{transform:translateX(19px);background:#fff;}
 .timepicker-popup.show{display:block;}
 .tp-title{font-size:11px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px;}
 .tp-inputs{display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:14px;}
-<style>
 .tp-input-single{width:100%;padding:12px;border:1px solid var(--br);border-radius:12px;background:var(--bg3);color:var(--t1);font-size:24px;font-weight:700;text-align:center;font-family:'Inter',sans-serif;letter-spacing:2px;margin-bottom:14px;transition:.2s;}
 .tp-input-single:focus{outline:none;border-color:var(--ac);background:var(--bg2);}
 .tp-input-single::placeholder{color:var(--t3);letter-spacing:1px;}
-</style>
 .tp-input{width:52px;padding:8px 4px;border:1px solid var(--br);border-radius:10px;background:var(--bg3);color:var(--t1);font-size:20px;font-weight:700;text-align:center;font-family:'Inter',sans-serif;transition:.2s;}
 .tp-input:focus{outline:none;border-color:var(--ac);background:var(--bg2);}
 .tp-sep{font-size:22px;font-weight:700;color:var(--t1);line-height:1;}
@@ -2129,7 +2127,7 @@ function openTaskNotePopup(taskId,anchorEl){
             else updateTask(notePopupTaskId,{note:textarea.value});
         },800);
     };
-
+}
 function closeTaskNotePopup(save=true){
     const popup=document.getElementById('taskNotePopup');
     if(!popup.classList.contains('show'))return;
