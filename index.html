@@ -1970,6 +1970,7 @@ async function updateTask(id,changes,targetDate){
         if(changes.time!==undefined)excChanges.time=changes.time;
         if(changes.status!==undefined)excChanges.status=changes.status;
         // Перенос дня на другую дату
+        console.log('MOVE DEBUG:',{changesDate:changes.date,targetDate:targetDate,excId:id});
         if(changes.date!==undefined&&changes.date!==targetDate){
             excChanges.moved_date=changes.date;
         }
@@ -1977,8 +1978,8 @@ async function updateTask(id,changes,targetDate){
         renderAll();
         return;
     }
-    // Обычная задача — как раньше
-    const allowed=['name','note','date','time','status'];
+   // Обычная задача — как раньше
+    const allowed=['name','note','date','time','status','repeat','weekdays','end_type','end_date'];
     const dbChanges={};
     allowed.forEach(k=>{if(changes[k]!==undefined)dbChanges[k]=changes[k];});
     if(Object.keys(dbChanges).length===0)return;
@@ -2541,8 +2542,12 @@ document.getElementById('mTaskSave').addEventListener('click',async()=>{
             await updateTask(editingTaskId,{name,note,time,date},editingTaskDate);
             showToast('✏️ День обновлён');
         } else {
-            // Обычная задача — обновляем строку
-            await updateTask(editingTaskId,{name,note,date,time});
+            // Обычная задача — обновляем строку (включая новые правила повторения)
+            await updateTask(editingTaskId,{
+                name,note,date,time,
+                repeat,weekdays:selectedWeekDays,
+                end_type:endType,end_date:endDate
+            });
             showToast('✏️ Задача обновлена');
         }
     } else {
