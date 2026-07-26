@@ -845,11 +845,11 @@ const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{
 
 let currentUser=null;
 let spaces=[],currentSpaceId=null;
-let tasks=[],notifications=[],notes=[];
+let tasks=[],notifications=[],notes=[],taskExceptions=[];
 let spaceMembers=[];
 let spaceSettings={};
 let selectedDate='',calendarDate=new Date(),currentView='month';
-let dragTaskId=null,editingTaskId=null,deletingTaskId=null;
+let dragTaskId=null,dragTaskDate=null,editingTaskId=null,editingTaskDate=null,deletingTaskId=null,deletingTaskDate=null;
 let selectedWeekDays=[],deletingSpaceId=null,editingCoverSpaceId=null;
 let taskTimers=[];
 let currentNoteId=null;
@@ -859,7 +859,7 @@ let browserNotifsEnabled=false;
 let selectedSpaceType='tasks';
 let dpCurrentTarget=null;
 let dpTaskDate='',dpTaskTime='',dpEndDate='';
-let movingTaskId=null,ctxMenuDate='';
+let movingTaskId=null,movingTaskDate=null,ctxMenuDate='';
 let dpDate=new Date();
 let pendingInviteToken=null;
 let notePopupTaskId=null;
@@ -1025,7 +1025,7 @@ document.getElementById('loginUsername').addEventListener('keydown',e=>{
 
 document.getElementById('logoutBtn').addEventListener('click',async()=>{
     await sb.auth.signOut();
-    currentUser=null;spaces=[];tasks=[];notifications=[];notes=[];
+    currentUser=null;spaces=[];tasks=[];taskExceptions=[];notifications=[];notes=[];
     spaceMembers=[];spaceSettings={};currentSpaceId=null;
     document.getElementById('modalUser').classList.remove('show');
     showAuthScreen();
@@ -1083,7 +1083,7 @@ async function deleteAccount(){
     await sb.from('user_settings').delete().eq('user_id',currentUser.id);
     await sb.from('profiles').delete().eq('user_id',currentUser.id);
     await sb.auth.signOut();
-    currentUser=null;spaces=[];tasks=[];notifications=[];notes=[];
+    currentUser=null;spaces=[];tasks=[];taskExceptions=[];notifications=[];notes=[];
     spaceMembers=[];spaceSettings={};currentSpaceId=null;userProfile=null;
     document.getElementById('modalDeleteAccount').classList.remove('show');
     showAuthScreen();
@@ -1297,7 +1297,8 @@ function scheduleTask(task){
 }
 function scheduleAllTasks(){
     clearAllTimers();
-    tasks.filter(t=>t.date===getTodayStr()&&t.time).forEach(scheduleTask);
+    const todayTasks=getTasksForDate(getTodayStr());
+    todayTasks.filter(t=>t.time).forEach(scheduleTask);
 }
 
 async function loadSpaces(){
@@ -1324,11 +1325,40 @@ async function loadSpaces(){
 
 async function loadSpaceTasks(){
     if(!currentSpaceId)return;
-    const{data,error}=await sb.from('tasks').select('*')
-        .eq('space_id',currentSpaceId)
-        .order('created_at',{ascending:true});
-    if(error){console.error('loadSpaceTasks error:',error);return;}
-    tasks=data||[];
+    // Постраничная загрузка задач (пачками по 1000)
+    let allTasks=[];
+    let from=0;
+    const pageSize=1000;
+    while(true){
+        const{data,error}=await sb.from('tasks').select('*')
+            .eq('space_id',currentSpaceId)
+            .order('created_at',{ascending:true})
+            .range(from,from+pageSize-1);
+        if(error){console.error('loadSpaceTasks error:',error);break;}
+        allTasks=allTasks.concat(data||[]);
+        if(!data||data.length<pageSize)break;
+        from+=pageSize;
+    }
+    tasks=allTasks;
+    // Загружаем исключения для повторяющихся задач
+    await loadTaskExceptions();
+}
+
+async function loadTaskExceptions(){
+    if(!currentSpaceId){taskExceptions=[];return;}
+    let all=[];
+    let from=0;
+    const pageSize=1000;
+    while(true){
+        const{data,error}=await sb.from('task_exceptions').select('*')
+            .eq('space_id',currentSpaceId)
+            .range(from,from+pageSize-1);
+        if(error){console.error('loadTaskExceptions error:',error);break;}
+        all=all.concat(data||[]);
+        if(!data||data.length<pageSize)break;
+        from+=pageSize;
+    }
+    taskExceptions=all;
 }
 
 async function loadSpaceMembers(spaceId){
@@ -1396,6 +1426,7 @@ async function updateSpaceCover(id,coverData){
 async function switchSpace(id){
     currentSpaceId=id;
     localStorage.setItem(`currentSpace_${currentUser.id}`,id);
+    taskExceptions=[];
     await loadSpaceTasks();
     updateSpaceHeader();
     scheduleAllTasks();
@@ -1855,21 +1886,56 @@ document.getElementById('notesBtn').addEventListener('click',()=>openNotes());
 async function addTask(name,note,date,time,repeat,weekdays,endType,endDate){
     if(!currentSpaceId){showToast('⚠️ Сначала выберите пространство');return;}
     const groupId=genId();
-    const dates=generateDates(date,repeat,weekdays,endType,endDate);
-    const rows=dates.map(d=>({
+    // Всегда сохраняем ОДНУ строку — мастер-задачу
+    const row={
         space_id:currentSpaceId,group_id:groupId,
-        name,note:note||'',date:d,time:time||'',
-        status:'waiting',repeat,
+        name,note:note||'',date:date||getTodayStr(),time:time||'',
+        status:'waiting',repeat:repeat||'none',
         weekdays:weekdays||[],
         end_type:endType||'forever',
         end_date:endDate||''
-    }));
-    const{data,error}=await sb.from('tasks').insert(rows).select();
+    };
+    const{data,error}=await sb.from('tasks').insert(row).select().single();
     if(error){showToast('❌ Ошибка добавления задачи');console.error(error);return;}
-    if(data)tasks=[...tasks,...data];
+    if(data)tasks.push(data);
     scheduleAllTasks();
     renderAll();
     showToast('✅ Задача добавлена');
+}
+
+// Создаёт или обновляет исключение для конкретной даты повторяющейся задачи
+async function upsertException(taskId,ds,changes){
+    const existing=taskExceptions.find(e=>e.task_id===taskId&&e.date===ds);
+    if(existing){
+        const{error}=await sb.from('task_exceptions')
+            .update(changes).eq('id',existing.id);
+        if(error){console.error('upsertException update:',error);return null;}
+        Object.assign(existing,changes);
+        return existing;
+    } else {
+        const task=tasks.find(t=>t.id===taskId);
+        const row={
+            task_id:taskId,
+            space_id:task?task.space_id:currentSpaceId,
+            date:ds,
+            type:changes.type||'override',
+            name:changes.name!==undefined?changes.name:null,
+            note:changes.note!==undefined?changes.note:null,
+            time:changes.time!==undefined?changes.time:null,
+            status:changes.status!==undefined?changes.status:null,
+            moved_date:changes.moved_date!==undefined?changes.moved_date:null
+        };
+        const{data,error}=await sb.from('task_exceptions').insert(row).select().single();
+        if(error){console.error('upsertException insert:',error);return null;}
+        taskExceptions.push(data);
+        return data;
+    }
+}
+
+// Проверяет, является ли задача повторяющейся (мастер-строкой)
+function isRepeatTask(taskId){
+    const task=tasks.find(t=>t.id===taskId);
+    return task&&task.repeat&&task.repeat!=='none';
 }
 
 async function updateGroup(groupId,changes){
@@ -1883,9 +1949,35 @@ async function updateGroup(groupId,changes){
     tasks.forEach(t=>{
         if(t.group_id===groupId)Object.assign(t,dbChanges);
     });
+    // Сбрасываем override-исключения (изменения применяются ко всем дням),
+    // но сохраняем skip (пропущенные дни остаются пропущенными)
+    const masterIds=tasks.filter(t=>t.group_id===groupId).map(t=>t.id);
+    for(const mid of masterIds){
+        const toRemove=taskExceptions.filter(e=>e.task_id===mid&&e.type==='override');
+        for(const e of toRemove){
+            await sb.from('task_exceptions').delete().eq('id',e.id);
+        }
+        taskExceptions=taskExceptions.filter(e=>!(e.task_id===mid&&e.type==='override'));
+    }
     renderAll();
 }
-async function updateTask(id,changes){
+async function updateTask(id,changes,targetDate){
+    // Если это повторяющаяся задача и указан конкретный день — работаем через исключение
+    if(isRepeatTask(id)&&targetDate){
+        const excChanges={type:'override'};
+        if(changes.name!==undefined)excChanges.name=changes.name;
+        if(changes.note!==undefined)excChanges.note=changes.note;
+        if(changes.time!==undefined)excChanges.time=changes.time;
+        if(changes.status!==undefined)excChanges.status=changes.status;
+        // Перенос дня на другую дату
+        if(changes.date!==undefined&&changes.date!==targetDate){
+            excChanges.moved_date=changes.date;
+        }
+        await upsertException(id,targetDate,excChanges);
+        renderAll();
+        return;
+    }
+    // Обычная задача — как раньше
     const allowed=['name','note','date','time','status'];
     const dbChanges={};
     allowed.forEach(k=>{if(changes[k]!==undefined)dbChanges[k]=changes[k];});
@@ -1897,9 +1989,20 @@ async function updateTask(id,changes){
     renderAll();
 }
 
-async function deleteTask(id){
+async function deleteTask(id,targetDate){
+    // Повторяющаяся задача + конкретный день → пропускаем только этот день
+    if(isRepeatTask(id)&&targetDate){
+        await upsertException(id,targetDate,{type:'skip'});
+        renderAll();
+        showToast('🗑️ День пропущен');
+        return;
+    }
+    // Обычная задача — удаляем строку
     const task=tasks.find(t=>t.id===id);
     if(task)await deleteNotificationsByTaskName(task.name);
+    // Заодно чистим все исключения этой задачи
+    await sb.from('task_exceptions').delete().eq('task_id',id);
+    taskExceptions=taskExceptions.filter(e=>e.task_id!==id);
     const{error}=await sb.from('tasks').delete().eq('id',id);
     if(error){showToast('❌ Ошибка удаления');console.error(error);return;}
     tasks=tasks.filter(t=>t.id!==id);
@@ -1909,7 +2012,12 @@ async function deleteTask(id){
 
 async function deleteGroup(groupId){
     const toDelete=tasks.filter(t=>t.group_id===groupId);
-    for(const t of toDelete)await deleteNotificationsByTaskName(t.name);
+    for(const t of toDelete){
+        await deleteNotificationsByTaskName(t.name);
+        // Удаляем исключения каждой мастер-задачи
+        await sb.from('task_exceptions').delete().eq('task_id',t.id);
+        taskExceptions=taskExceptions.filter(e=>e.task_id!==t.id);
+    }
     const{error}=await sb.from('tasks').delete()
         .eq('group_id',groupId).eq('space_id',currentSpaceId);
     if(error){showToast('❌ Ошибка удаления');console.error(error);return;}
@@ -1918,41 +2026,147 @@ async function deleteGroup(groupId){
     showToast('🗑️ Все повторения удалены');
 }
 
-function generateDates(startDate,repeat,weekdays,endType,endDate){
-    if(!startDate)startDate=getTodayStr();
-    if(repeat==='none'||!repeat)return[startDate];
-    const dates=[];
-    const start=parseDate(startDate);
-    const max=endType==='date'&&endDate?parseDate(endDate):new Date(start.getFullYear()+2,11,31);
-    let cur=new Date(start),safety=0;
-    while(cur<=max&&safety<1000){
-        safety++;
-        const ds=dateStr(cur);
-        if(repeat==='daily'){dates.push(ds);cur.setDate(cur.getDate()+1);}
-        else if(repeat==='weekdays'){
-            if(weekdays.includes(cur.getDay()))dates.push(ds);
-            cur.setDate(cur.getDate()+1);
-        }
-        else if(repeat==='weekly'){dates.push(ds);cur.setDate(cur.getDate()+7);}
-        else if(repeat==='monthly'){dates.push(ds);cur.setMonth(cur.getMonth()+1);}
+// Проверяет, попадает ли дата ds в серию повторений мастер-задачи
+function dateMatchesRepeat(task,ds){
+    if(!task.repeat||task.repeat==='none')return task.date===ds;
+    const start=parseDate(task.date);
+    const cur=parseDate(ds);
+    if(cur<start)return false;
+    // Проверка конца повторения
+    if(task.end_type==='date'&&task.end_date){
+        const end=parseDate(task.end_date);
+        if(cur>end)return false;
     }
-    return dates.length?dates:[startDate];
+    if(task.repeat==='daily')return true;
+    if(task.repeat==='weekdays'){
+        const wd=task.weekdays||[];
+        return wd.includes(cur.getDay());
+    }
+    if(task.repeat==='weekly'){
+        const diffDays=Math.round((cur-start)/(1000*60*60*24));
+        return diffDays%7===0;
+    }
+    if(task.repeat==='monthly'){
+        return cur.getDate()===start.getDate();
+    }
+    return false;
 }
 
-function getTasksForDate(ds){return tasks.filter(t=>t.date===ds);}
-function getDatesWithTasks(){return[...new Set(tasks.map(t=>t.date))];}
+// Находит исключение для задачи на конкретную дату
+function findException(taskId,ds){
+    return taskExceptions.find(e=>e.task_id===taskId&&e.date===ds);
+}
+
+// Строит виртуальный экземпляр задачи на конкретную дату
+function buildVirtualTask(task,ds){
+    const exc=findException(task.id,ds);
+    if(exc&&exc.type==='skip')return null; // день пропущен
+    const vt={
+        id:task.id,
+        space_id:task.space_id,
+        name:task.name,
+        note:task.note||'',
+        date:ds,
+        time:task.time||'',
+        status:'waiting',
+        repeat:task.repeat,
+        weekdays:task.weekdays,
+        end_type:task.end_type,
+        end_date:task.end_date,
+        group_id:task.group_id,
+        _isVirtual:(task.repeat&&task.repeat!=='none'),
+        _masterDate:task.date,
+        _excId:exc?exc.id:null
+    };
+    if(exc&&exc.type==='override'){
+        if(exc.name!=null)vt.name=exc.name;
+        if(exc.note!=null)vt.note=exc.note;
+        if(exc.time!=null)vt.time=exc.time;
+        if(exc.status!=null)vt.status=exc.status;
+        if(exc.moved_date){
+            // Этот день перенесён на другую дату — на исходной дате его нет
+            return null;
+        }
+    }
+    return vt;
+}
+
+// Возвращает все задачи (реальные + виртуальные) на конкретную дату
+function getTasksForDate(ds){
+    const result=[];
+    tasks.forEach(task=>{
+        if(!task.repeat||task.repeat==='none'){
+            if(task.date===ds)result.push(buildSimpleTask(task));
+            return;
+        }
+        // Повторяющаяся задача — проверяем совпадение по правилу
+        if(dateMatchesRepeat(task,ds)){
+            const vt=buildVirtualTask(task,ds);
+            if(vt)result.push(vt);
+        }
+    });
+    // Добавляем перенесённые сюда экземпляры (override с moved_date === ds)
+    taskExceptions.forEach(exc=>{
+        if(exc.type==='override'&&exc.moved_date===ds){
+            const task=tasks.find(t=>t.id===exc.task_id);
+            if(!task)return;
+            const vt={
+                id:task.id,
+                space_id:task.space_id,
+                name:exc.name!=null?exc.name:task.name,
+                note:exc.note!=null?exc.note:(task.note||''),
+                date:ds,
+                time:exc.time!=null?exc.time:(task.time||''),
+                status:exc.status!=null?exc.status:'waiting',
+                repeat:task.repeat,
+                weekdays:task.weekdays,
+                end_type:task.end_type,
+                end_date:task.end_date,
+                group_id:task.group_id,
+                _isVirtual:true,
+                _masterDate:task.date,
+                _excId:exc.id,
+                _originalDate:exc.date
+            };
+            result.push(vt);
+        }
+    });
+    return result;
+}
+
+// Простой (неповторяющийся) таск — возвращаем как есть, помечаем не-виртуальным
+function buildSimpleTask(task){
+    return {...task,_isVirtual:false};
+}
+
+// Возвращает даты, на которых есть задачи, в пределах диапазона (для календаря)
+function getDatesWithTasks(){
+    const dates=new Set();
+    // Диапазон: текущий видимый месяц ± немного + выбранная дата
+    const range=getCalendarRange();
+    let cur=new Date(range.from);
+    while(cur<=range.to){
+        const ds=dateStr(cur);
+        if(getTasksForDate(ds).length>0)dates.add(ds);
+        cur.setDate(cur.getDate()+1);
+    }
+    return [...dates];
+}
+
+// Определяет диапазон дат для генерации виртуальных задач в календаре
+function getCalendarRange(){
+    const y=calendarDate.getFullYear();
+    const m=calendarDate.getMonth();
+    // Берём с запасом: предыдущий и следующий месяц
+    const from=new Date(y,m-1,1);
+    const to=new Date(y,m+2,0);
+    return {from,to};
+}
 
 function renderAll(){
     renderPlanner();
     renderCalendar();
     renderCalendarTasks();
-}
-
-function isTaskVisible(task){
-    if(isClassicMode()){
-        return task.date<=getTodayStr()||task.date===selectedDate;
-    }
-    return task.date===selectedDate;
 }
 
 function updatePlannerTitle(){
@@ -1966,6 +2180,42 @@ function updatePlannerTitle(){
     }
 }
 
+// Собирает задачи для отображения в планере (с учётом виртуальных экземпляров)
+function getVisiblePlannerTasks(){
+    if(isClassicMode()){
+        // Классический режим: все дни от прошлого до выбранной даты
+        const dates=new Set();
+        const today=getTodayStr();
+        // Собираем даты: реальные задачи + генерируем для повторяющихся
+        const range=getClassicRange();
+        let cur=new Date(range.from);
+        while(cur<=range.to){
+            dates.add(dateStr(cur));
+            cur.setDate(cur.getDate()+1);
+        }
+        let result=[];
+        dates.forEach(ds=>{
+            if(ds<=today||ds===selectedDate){
+                result=result.concat(getTasksForDate(ds));
+            }
+        });
+        return result;
+    }
+    // Обычный режим — только выбранная дата
+    return getTasksForDate(selectedDate);
+}
+
+// Диапазон для классического режима
+function getClassicRange(){
+    const today=parseDate(getTodayStr());
+    const sel=parseDate(selectedDate);
+    // от 60 дней назад до максимума(сегодня, выбранная дата)
+    const from=new Date(today);
+    from.setDate(from.getDate()-60);
+    const to=sel>today?sel:today;
+    return {from,to};
+}
+    
 function renderPlanner(){
     updatePlannerTitle();
     if(!currentSpaceId){
@@ -1983,7 +2233,7 @@ function renderPlanner(){
         });
         updateCounts();return;
     }
-    const visibleTasks=tasks.filter(t=>isTaskVisible(t));
+const visibleTasks=getVisiblePlannerTasks();
     ['waiting','in-progress','done'].forEach(status=>{
         const list=document.getElementById('list-'+status);
         if(!list)return;
@@ -2001,7 +2251,7 @@ function renderPlanner(){
 }
 
 function updateCounts(){
-    const visibleTasks=tasks.filter(t=>isTaskVisible(t));
+    const visibleTasks=getVisiblePlannerTasks();
     ['waiting','in-progress','done'].forEach(s=>{
         const el=document.getElementById('cnt-'+s);
         if(el)el.textContent=visibleTasks.filter(t=>t.status===s).length;
@@ -2039,10 +2289,10 @@ function createTaskEl(task){
                 <button class="ddi danger" data-a="delete"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg>Удалить</button>
             </div>
         </div>`;
-    div.querySelector('.task-check').addEventListener('click',function(e){
+        div.querySelector('.task-check').addEventListener('click',function(e){
         e.stopPropagation();
         this.classList.add('done-check');
-        setTimeout(async()=>await deleteTask(task.id),300);
+        setTimeout(async()=>await deleteTask(task.id,task.date),300);
     });
     if(task.note){
         const noteTag=div.querySelector('.tag.note');
@@ -2068,20 +2318,22 @@ function createTaskEl(task){
             e.stopPropagation();
             ddmenu.classList.remove('show');
             const a=btn.dataset.a;
-            if(a==='edit')openEditModal(task.id);
-            else if(a==='delete')openDeleteConfirm(task.id);
-            else if(a==='move')openMoveTaskDatepicker(task.id,btn);
-            else updateTask(task.id,{status:a});
+            if(a==='edit')openEditModal(task.id,task.date);
+            else if(a==='delete')openDeleteConfirm(task.id,task.date);
+            else if(a==='move')openMoveTaskDatepicker(task.id,btn,task.date);
+            else updateTask(task.id,{status:a},task.date);
         });
     });
     div.addEventListener('dragstart',e=>{
         dragTaskId=task.id;
+        dragTaskDate=task.date;
         e.dataTransfer.effectAllowed='move';
         setTimeout(()=>div.classList.add('dragging'),0);
     });
     div.addEventListener('dragend',()=>{
         div.classList.remove('dragging');
         dragTaskId=null;
+        dragTaskDate=null;
     });
     return div;
 }
@@ -2093,7 +2345,7 @@ function initDragDrop(){
         col.addEventListener('drop',async e=>{
             e.preventDefault();col.classList.remove('over');
             if(!dragTaskId)return;
-            await updateTask(dragTaskId,{status:col.dataset.status});
+            await updateTask(dragTaskId,{status:col.dataset.status},dragTaskDate);
             showToast('📋 Статус обновлён');
         });
     });
@@ -2169,12 +2421,13 @@ document.getElementById('repeatEndDateGroup').style.display='none';
     setTimeout(()=>document.getElementById('mTaskName').focus(),100);
 }
 
-function openEditModal(id){
+function openEditModal(id,targetDate){
     const task=tasks.find(t=>t.id===id);
     if(!task)return;
     editingTaskId=id;
+    editingTaskDate=targetDate||task.date;
     selectedWeekDays=task.weekdays?[...task.weekdays]:[];
-    dpTaskDate=task.date||getTodayStr();
+    dpTaskDate=targetDate||task.date||getTodayStr();
     dpTaskTime=task.time||'';
     dpEndDate=task.end_date||'';
     document.getElementById('modalTaskTitle').textContent='Редактировать задачу';
@@ -2192,10 +2445,10 @@ function openEditModal(id){
     document.getElementById('weekdaysGroup').style.display=rep==='weekdays'?'block':'none';
     document.getElementById('repeatEndGroup').style.display=rep&&rep!=='none'?'block':'none';
 document.getElementById('repeatEndDateGroup').style.display=task.end_type==='date'?'block':'none';
-    const hasGroup=tasks.filter(t=>t.group_id===task.group_id).length>1;
+    const isRepeat=task.repeat&&task.repeat!=='none';
     const applyGroup=document.getElementById('applyAllGroup');
     const applyCb=document.getElementById('applyAllCheckbox');
-    if(hasGroup){
+    if(isRepeat){
         applyGroup.style.display='block';
         applyCb.checked=false;
     } else {
@@ -2205,8 +2458,11 @@ document.getElementById('repeatEndDateGroup').style.display=task.end_type==='dat
     document.getElementById('modalTask').classList.add('show');
 }
 
-function openViewModal(id){
-    const task=tasks.find(t=>t.id===id);
+function openViewModal(id,targetDate){
+    // Ищем виртуальный экземпляр на конкретную дату (с учётом исключений)
+    const date=targetDate||selectedDate;
+    const dayTasks=getTasksForDate(date);
+    const task=dayTasks.find(t=>t.id===id)||tasks.find(t=>t.id===id);
     if(!task)return;
     document.getElementById('vTitle').textContent=task.name;
     document.getElementById('vNote').textContent=task.note||'';
@@ -2217,21 +2473,22 @@ function openViewModal(id){
     document.getElementById('vMeta').textContent=meta;
     document.getElementById('vEdit').onclick=()=>{
         document.getElementById('modalView').classList.remove('show');
-        openEditModal(id);
+        openEditModal(id,date);
     };
     document.getElementById('vDelete').onclick=()=>{
         document.getElementById('modalView').classList.remove('show');
-        openDeleteConfirm(id);
+        openDeleteConfirm(id,date);
     };
     document.getElementById('modalView').classList.add('show');
 }
 
-function openDeleteConfirm(id){
+function openDeleteConfirm(id,targetDate){
     const task=tasks.find(t=>t.id===id);
     if(!task)return;
     deletingTaskId=id;
-    const hasGroup=tasks.filter(t=>t.group_id===task.group_id).length>1;
-    if(!hasGroup){deleteTask(id);return;}
+    deletingTaskDate=targetDate||task.date;
+    const isRepeat=task.repeat&&task.repeat!=='none';
+    if(!isRepeat){deleteTask(id);return;}
     document.getElementById('modalConfirm').classList.add('show');
 }
 
@@ -2275,10 +2532,16 @@ document.getElementById('mTaskSave').addEventListener('click',async()=>{
     if(editingTaskId){
         const applyAll=document.getElementById('applyAllCheckbox').checked;
         const task=tasks.find(t=>t.id===editingTaskId);
-        if(applyAll&&task){
+        if(applyAll&&task&&task.repeat&&task.repeat!=='none'){
+            // Применяем ко всей серии — обновляем мастер-строку
             await updateGroup(task.group_id,{name,note,time});
             showToast('✏️ Обновлены все повторения');
+        } else if(task&&task.repeat&&task.repeat!=='none'){
+            // Только этот день — создаём override-исключение
+            await updateTask(editingTaskId,{name,note,time,date},editingTaskDate);
+            showToast('✏️ День обновлён');
         } else {
+            // Обычная задача — обновляем строку
             await updateTask(editingTaskId,{name,note,date,time});
             showToast('✏️ Задача обновлена');
         }
@@ -2295,8 +2558,9 @@ document.getElementById('vClose').addEventListener('click',()=>
     document.getElementById('modalView').classList.remove('show'));
 document.getElementById('delToday').addEventListener('click',async()=>{
     document.getElementById('modalConfirm').classList.remove('show');
-    if(deletingTaskId)await deleteTask(deletingTaskId);
+    if(deletingTaskId)await deleteTask(deletingTaskId,deletingTaskDate);
     deletingTaskId=null;
+    deletingTaskDate=null;
 });
 document.getElementById('delAll').addEventListener('click',async()=>{
     document.getElementById('modalConfirm').classList.remove('show');
@@ -2305,10 +2569,12 @@ document.getElementById('delAll').addEventListener('click',async()=>{
         if(task)await deleteGroup(task.group_id);
     }
     deletingTaskId=null;
+    deletingTaskDate=null;
 });
 document.getElementById('delCancel').addEventListener('click',()=>{
     document.getElementById('modalConfirm').classList.remove('show');
     deletingTaskId=null;
+    deletingTaskDate=null;
 });
 document.getElementById('addBtn').addEventListener('click',()=>{
     if(!currentSpaceId){
@@ -2405,9 +2671,10 @@ function makeDpDay(d,otherMonth,today){
     el.addEventListener('click',()=>{
         if(dpCurrentTarget==='move'){
             if(movingTaskId){
-                updateTask(movingTaskId,{date:ds});
+                updateTask(movingTaskId,{date:ds},movingTaskDate);
                 showToast(`📅 Перенесено на ${formatDate(ds)}`);
                 movingTaskId=null;
+                movingTaskDate=null;
             }
         } else if(dpCurrentTarget==='enddate'){
             dpEndDate=ds;
@@ -2441,8 +2708,9 @@ function closeDatepicker(){
     dpCurrentTarget=null;
 }
 
-function openMoveTaskDatepicker(taskId,anchorEl){
+function openMoveTaskDatepicker(taskId,anchorEl,fromDate){
     movingTaskId=taskId;
+    movingTaskDate=fromDate||null;
     dpCurrentTarget='move';
     const popup=document.getElementById('datepickerPopup');
     const rect=anchorEl.getBoundingClientRect();
@@ -2621,7 +2889,7 @@ function initCalendarMonthDragDrop(){
             if(!dragTaskId)return;
             const ds=day.dataset.date;
             if(!ds)return;
-            await updateTask(dragTaskId,{date:ds});
+            await updateTask(dragTaskId,{date:ds},dragTaskDate);
             showToast(`📅 Перенесено на ${formatDate(ds)}`);
         });
     });
@@ -2697,7 +2965,7 @@ function renderWeek(){
             if(!dragTaskId)return;
             const ds2=el.dataset.date;
             if(!ds2)return;
-            await updateTask(dragTaskId,{date:ds2});
+            await updateTask(dragTaskId,{date:ds2},dragTaskDate);
             showToast(`📅 Перенесено на ${formatDate(ds2)}`);
         });
         frag.appendChild(el);
@@ -2734,15 +3002,17 @@ function renderCalendarTasks(){
                 ${task.time?`<div class="ctask-time">🕐 ${task.time}</div>`:''}
             </div>
             <span class="ctask-st">${st[task.status]||''}</span>`;
-        el.addEventListener('click',()=>openViewModal(task.id));
+        el.addEventListener('click',()=>openViewModal(task.id,task.date));
         el.addEventListener('dragstart',e=>{
             dragTaskId=task.id;
+            dragTaskDate=task.date;
             e.dataTransfer.effectAllowed='move';
             setTimeout(()=>el.classList.add('dragging'),0);
         });
         el.addEventListener('dragend',()=>{
             el.classList.remove('dragging');
             dragTaskId=null;
+            dragTaskDate=null;
         });
         frag.appendChild(el);
     });
