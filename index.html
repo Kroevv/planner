@@ -1114,6 +1114,7 @@ async function onLogin(){
     renderAll();
     renderSidebar();
     subscribeToSpace();
+    bindVisibilitySync();
     if(spaces.length===0){
         openSpaceModal();
     }
@@ -1456,6 +1457,18 @@ function subscribeToSpace(){
         .subscribe();
 }
 
+// Автообновление при возврате на вкладку (подстраховка для пропущенных событий)
+let visibilitySyncBound=false;
+function bindVisibilitySync(){
+    if(visibilitySyncBound)return;
+    visibilitySyncBound=true;
+    document.addEventListener('visibilitychange',()=>{
+        if(document.visibilityState==='visible'&&currentSpaceId){
+            scheduleSyncReload();
+        }
+    });
+}
+    
 // Перезагружает задачи в фоне, не сбивая выбранный день/месяц пользователя
 function scheduleSyncReload(){
     if(syncReloadTimer)clearTimeout(syncReloadTimer);
