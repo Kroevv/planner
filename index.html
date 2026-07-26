@@ -1939,7 +1939,7 @@ function isRepeatTask(taskId){
 }
 
 async function updateGroup(groupId,changes){
-    const allowed=['name','note','time'];
+    const allowed=['name','note','time','date','repeat','weekdays','end_type','end_date'];
     const dbChanges={};
     allowed.forEach(k=>{if(changes[k]!==undefined)dbChanges[k]=changes[k];});
     if(Object.keys(dbChanges).length===0)return;
@@ -1949,20 +1949,36 @@ async function updateGroup(groupId,changes){
     tasks.forEach(t=>{
         if(t.group_id===groupId)Object.assign(t,dbChanges);
     });
-    // Сбрасываем override-исключения (изменения применяются ко всем дням),
-    // но сохраняем skip (пропущенные дни остаются пропущенными)
+    // Определяем, изменилось ли расписание (тип повторения / дни / дата начала)
+    const scheduleChanged =
+        changes.repeat!==undefined ||
+        changes.weekdays!==undefined ||
+        changes.date!==undefined ||
+        changes.end_type!==undefined ||
+        changes.end_date!==undefined;
     const masterIds=tasks.filter(t=>t.group_id===groupId).map(t=>t.id);
     for(const mid of masterIds){
-        const toRemove=taskExceptions.filter(e=>e.task_id===mid&&e.type==='override');
+        // Всегда сбрасываем override (изменения применяются ко всем дням)
+        // Если изменилось расписание — сбрасываем и skip (они относились к старому расписанию)
+        const toRemove=taskExceptions.filter(e=>{
+            if(e.task_id!==mid)return false;
+            if(e.type==='override')return true;
+            if(e.type==='skip'&&scheduleChanged)return true;
+            return false;
+        });
         for(const e of toRemove){
             await sb.from('task_exceptions').delete().eq('id',e.id);
         }
-        taskExceptions=taskExceptions.filter(e=>!(e.task_id===mid&&e.type==='override'));
+        taskExceptions=taskExceptions.filter(e=>{
+            if(e.task_id!==mid)return true;
+            if(e.type==='override')return false;
+            if(e.type==='skip'&&scheduleChanged)return false;
+            return true;
+        });
     }
     renderAll();
 }
 async function updateTask(id,changes,targetDate){
-    console.log('UPDATE DEBUG:',{id,changes,targetDate,isRepeat:isRepeatTask(id)});
     // Если это повторяющаяся задача и указан конкретный день — работаем через исключение
     if(isRepeatTask(id)&&targetDate){
         const excChanges={type:'override'};
@@ -1971,7 +1987,6 @@ async function updateTask(id,changes,targetDate){
         if(changes.time!==undefined)excChanges.time=changes.time;
         if(changes.status!==undefined)excChanges.status=changes.status;
         // Перенос дня на другую дату
-        console.log('MOVE DEBUG:',{changesDate:changes.date,targetDate:targetDate,excId:id});
         if(changes.date!==undefined&&changes.date!==targetDate){
             excChanges.moved_date=changes.date;
         }
@@ -2109,8 +2124,7 @@ function getTasksForDate(ds){
     });
    // Добавляем перенесённые сюда экземпляры (override с moved_date === ds)
     taskExceptions.forEach(exc=>{
-        console.log('EXC CHECK:',{ds,excMoved:exc.moved_date,excType:exc.type,match:exc.moved_date===ds});
-        if(exc.type==='override'&&exc.moved_date===ds){
+       if(exc.type==='override'&&exc.moved_date===ds){
             const task=tasks.find(t=>t.id===exc.task_id);
             if(!task)return;
             const vt={
@@ -2536,8 +2550,12 @@ document.getElementById('mTaskSave').addEventListener('click',async()=>{
         const applyAll=document.getElementById('applyAllCheckbox').checked;
         const task=tasks.find(t=>t.id===editingTaskId);
         if(applyAll&&task&&task.repeat&&task.repeat!=='none'){
-            // Применяем ко всей серии — обновляем мастер-строку
-            await updateGroup(task.group_id,{name,note,time});
+            // Применяем ко всей серии — обновляем мастер-строку (включая правила)
+            await updateGroup(task.group_id,{
+                name,note,time,date,
+                repeat,weekdays:selectedWeekDays,
+                end_type:endType,end_date:endDate
+            });
             showToast('✏️ Обновлены все повторения');
         } else if(task&&task.repeat&&task.repeat!=='none'){
             // Только этот день — создаём override-исключение
