@@ -2107,8 +2107,9 @@ function getTasksForDate(ds){
             if(vt)result.push(vt);
         }
     });
-    // Добавляем перенесённые сюда экземпляры (override с moved_date === ds)
+   // Добавляем перенесённые сюда экземпляры (override с moved_date === ds)
     taskExceptions.forEach(exc=>{
+        console.log('EXC CHECK:',{ds,excMoved:exc.moved_date,excType:exc.type,match:exc.moved_date===ds});
         if(exc.type==='override'&&exc.moved_date===ds){
             const task=tasks.find(t=>t.id===exc.task_id);
             if(!task)return;
