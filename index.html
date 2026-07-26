@@ -1962,6 +1962,7 @@ async function updateGroup(groupId,changes){
     renderAll();
 }
 async function updateTask(id,changes,targetDate){
+    console.log('UPDATE DEBUG:',{id,changes,targetDate,isRepeat:isRepeatTask(id)});
     // Если это повторяющаяся задача и указан конкретный день — работаем через исключение
     if(isRepeatTask(id)&&targetDate){
         const excChanges={type:'override'};
