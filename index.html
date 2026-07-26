@@ -839,8 +839,7 @@ body.dark .toggle::after{transform:translateX(19px);background:#fff;}
 const SUPABASE_URL='https://aazlpxearonufdgdplgh.supabase.co';
 const SUPABASE_KEY='sb_publishable_yabpY3t6172iUAbS4JFnjA_cM3fN_3j';
 const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{
-    auth:{persistSession:true,autoRefreshToken:true},
-    realtime:{enabled:false}
+    auth:{persistSession:true,autoRefreshToken:true}
 });
 
 let currentUser=null;
@@ -864,6 +863,8 @@ let dpDate=new Date();
 let pendingInviteToken=null;
 let notePopupTaskId=null;
 let renderScheduled=false;
+let realtimeChannel=null;
+let syncReloadTimer=null;
 
 const MONTHS=['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
 const WDAYS_FULL=['Воскресенье','Понедельник','Вторник','Среда','Четверг','Пятница','Суббота'];
@@ -1112,6 +1113,7 @@ async function onLogin(){
     scheduleAllTasks();
     renderAll();
     renderSidebar();
+    subscribeToSpace();
     if(spaces.length===0){
         openSpaceModal();
     }
@@ -1432,9 +1434,39 @@ async function switchSpace(id){
     scheduleAllTasks();
     renderAll();
     renderSidebar();
+    subscribeToSpace();
     showToast('📁 Пространство открыто');
 }
 
+// Подписка на изменения текущего пространства (задачи + исключения)
+function subscribeToSpace(){
+    // Отписываемся от старого канала
+    if(realtimeChannel){
+        sb.removeChannel(realtimeChannel);
+        realtimeChannel=null;
+    }
+    if(!currentSpaceId)return;
+    realtimeChannel=sb.channel('space-'+currentSpaceId)
+        .on('postgres_changes',
+            {event:'*',schema:'public',table:'tasks',filter:'space_id=eq.'+currentSpaceId},
+            ()=>scheduleSyncReload())
+        .on('postgres_changes',
+            {event:'*',schema:'public',table:'task_exceptions',filter:'space_id=eq.'+currentSpaceId},
+            ()=>scheduleSyncReload())
+        .subscribe();
+}
+
+// Перезагружает задачи в фоне, не сбивая выбранный день/месяц пользователя
+function scheduleSyncReload(){
+    if(syncReloadTimer)clearTimeout(syncReloadTimer);
+    syncReloadTimer=setTimeout(async()=>{
+        if(!currentSpaceId)return;
+        await loadSpaceTasks();     // перезагружаем tasks + task_exceptions
+        scheduleAllTasks();
+        renderAll();                // перерисовка (selectedDate/calendarDate не трогаем)
+    },400);
+}
+    
 function updateSpaceHeader(){
     const space=spaces.find(s=>s.id===currentSpaceId);
     const el=document.getElementById('currentSpaceName');
